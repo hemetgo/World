@@ -11,6 +11,8 @@ public class SimpleZombie : MovementBehaviour
 
     bool IsAttackEnabled { get; set; }
 
+	public bool IsAttacking => _animator.GetCurrentAnimatorStateInfo(0).IsName("Attacking");
+
 	PlayerController Player => PlayerController.Instance;
 	Animator _animator;
 
@@ -32,12 +34,13 @@ public class SimpleZombie : MovementBehaviour
 
 	public void AttackController()
     {
+		_agent.isStopped = IsAttacking;
+		
 		if (IsAttackEnabled)
 		{
 			if (Vector3.Distance(transform.position, Player.transform.position) <= _attackRange)
 			{
 				_animator.SetBool("Attacking", true);
-				_agent.isStopped = true;
 				_animator.speed = _attackSpeed;
 				return;
 			}
@@ -45,11 +48,14 @@ public class SimpleZombie : MovementBehaviour
 
 		_animator.SetBool("Attacking", false);
 		_animator.speed = 1;
-		_agent.isStopped = false;
+
 	}
 
 	public void CauseDamageToPlayer()
 	{
-		Player.TakeDamage(_attackDamage);
+		if (Vector3.Distance(transform.position, Player.transform.position) <= _attackRange * 1.25f)
+		{
+			Player.TakeDamage(_attackDamage);
+		}
 	}
 }

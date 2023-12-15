@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IHealth
 {
+	public static Action<IHealth> OnPlayerHealthUpdate;
+
     [HideInInspector] public PlayerMovement Movement;
 	[HideInInspector] public PlayerHand Hand;
 	[HideInInspector] public PlayerItemCollector ItemCollector;
@@ -10,12 +13,12 @@ public class PlayerController : MonoBehaviour, IHealth
 
 	public static PlayerController Instance;
 
-
     public bool IsMoving => Movement.Velocity.magnitude != 0;
 	public bool IsCollecting => Animator.GetBool("Punching");
 	public bool IsShooting => Animator.GetBool("Shooting");
 
-	[field: SerializeField] public int Health { get; set; } = 100;
+	[field: SerializeField] public int MaxHealth { get; set; } = 100;
+	[field: SerializeField] public int CurrentHealth { get; set; }
 
 	private void Awake()
 	{
@@ -27,6 +30,9 @@ public class PlayerController : MonoBehaviour, IHealth
 		Combat = GetComponent<PlayerCombat>();
 
 		Animator = GetComponent<Animator>();
+
+		CurrentHealth = MaxHealth;
+		OnPlayerHealthUpdate?.Invoke(this);
 	}
 
 	public void LookAt(Vector3 target)
@@ -36,9 +42,11 @@ public class PlayerController : MonoBehaviour, IHealth
 
 	public void TakeDamage(int damage)
 	{
-		Health -= damage;
+		CurrentHealth -= damage;
 
-		if (Health <= 0)
+		OnPlayerHealthUpdate?.Invoke(this);
+
+		if (CurrentHealth <= 0)
 		{
 			Die();
 		}

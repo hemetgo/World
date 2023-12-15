@@ -731,9 +731,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 1.5
-  _attackRange: 1.5
+  _attackRange: 1.2
   _attackDamage: 25
-  _attackCooldown: 1.5
+  _attackSpeed: 1.5
 --- !u!95 &2082502566169042757
 Animator:
   serializedVersion: 5

@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IHealth
 {
-	[field: SerializeField] public int Health { get; set; }
+	[field: SerializeField] public int MaxHealth { get; set; }
+	[field: SerializeField] public int CurrentHealth { get; set; }
 	[field: SerializeField] public Transform TargetPoint { get; set; }
 
 
 	private void Awake()
 	{
 		EnemyService.RegisterEnemy(this);
+
+		CurrentHealth = MaxHealth;
 	}
 
 	private void OnDestroy()
@@ -20,9 +23,9 @@ public class Enemy : MonoBehaviour, IHealth
 
 	public void TakeDamage(int damage)
 	{
-		Health -= damage;
+		CurrentHealth -= damage;
 
-		if (Health < 0)
+		if (CurrentHealth < 0)
 		{
 			Die();
 		}

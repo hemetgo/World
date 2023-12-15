@@ -5,7 +5,8 @@ using UnityEngine;
 
 public interface IHealth 
 {
-    public int Health { get; set; }
+    public int MaxHealth { get; set; }
+    public int CurrentHealth { get; set; }
 
     public void TakeDamage(int damage);
 

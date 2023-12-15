@@ -13,7 +13,14 @@ public class ItemCollector : MonoBehaviour
 
 	public virtual bool IsCollecting { get; set; }
 
-	protected bool IsCollectLocked { get; set; }
+	public virtual bool IsCollectEnabled
+	{
+		get
+		{
+			_itemSourcesOnRange.RemoveAll(source => source == null);
+			return _itemSourcesOnRange.Count > 0;
+		}
+	}
 
 	public ScriptableEvent OnCollectStart;
 
@@ -25,21 +32,6 @@ public class ItemCollector : MonoBehaviour
 	{
 	}
 
-	public virtual IEnumerator Collect()
-    {
-		_itemSourcesOnRange.RemoveAll(source => source == null);
-
-		if (_itemSourcesOnRange.Count > 0)
-		{
-			IsCollectLocked = true;
-
-			OnCollectStart?.Invoke();
-
-			yield return new WaitForSeconds(_collectCooldown);
-
-			IsCollectLocked = false;
-		}
-	}
 
 	public virtual void CollectItems()
 	{

@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e612740d8eead9a49bce2e37630c7a2d, type: 3}
+  m_Script: {fileID: 11500000, guid: 900fed4fede5de9468eccdaa1f6e3938, type: 3}
   m_Name: Axe
   m_EditorClassIdentifier: 
   <SaveID>k__BackingField: axe
   <Name>k__BackingField: Axe
   <Category>k__BackingField: {fileID: 11400000, guid: becfc033ecafd344c800cbdf252f5e6c,
     type: 2}
+  Efficiency: 10

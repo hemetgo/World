@@ -5,12 +5,19 @@ using UnityEngine.AI;
 
 public class PlayerItemCollector : ItemCollector
 {
-	[SerializeField] ItemSettings _axe;
+	[SerializeField] CollectingToolSettings _collectingToolSettings;
 
 	PlayerController _controller;
 	Animator _animator;
 
-	public override bool IsCollecting { get => _animator.GetBool("Punching"); }
+	public override bool IsCollectEnabled
+	{
+		get
+		{
+			if (_controller.IsMoving || _controller.IsShooting) return false;
+			return base.IsCollectEnabled;
+		}
+	}
 
 	protected override void Awake()
 	{
@@ -18,46 +25,24 @@ public class PlayerItemCollector : ItemCollector
 
 		_controller = GetComponent<PlayerController>();
 		_animator = GetComponent<Animator>();
-
-		OnCollectStart.OnInvoke += StartCollect;
 	}
 
 	protected override void Update()
 	{
-		if (_controller.IsMoving)
-		{
-			if (IsCollecting)
-			{
-				StopCollect();
-			}
-
-			return;
-		}
-
-		if (_itemSourcesOnRange.Count == 0) 
-		{
-			StopCollect();
-			return;
-		}
-
 		base.Update();
 
-		if (!IsCollectLocked && _itemSourcesOnRange.Count > 0)
+		bool isCollectEnabled = IsCollectEnabled;
+		_animator.SetBool("Punching", isCollectEnabled);
+
+		if (isCollectEnabled)
 		{
-			StartCoroutine(Collect());
+			_controller.Hand.ActivateItem(_collectingToolSettings);
+			_animator.speed = _collectingToolSettings.Efficiency;
+		}
+		else
+		{
+			_controller.Hand.DeactivateAllItems();
+			_animator.speed = 1;
 		}
 	}
-
-	void StartCollect()
-	{
-		_controller.Hand.ActivateItem(_axe);
-		_animator.SetBool("Punching", true);
-	}
-
-	void StopCollect()
-	{
-		_controller.Hand.DeactivateAllItems();
-		_animator.SetBool("Punching", false);
-	}
-
 }

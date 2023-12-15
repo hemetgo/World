@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class PlayerBuilder : MonoBehaviour
 {
-	[SerializeField] Animator _animator;
+	Animator _animator;
 
     BuildInteractable _buildInteraable;
+
+	private void Start()
+	{
+		_animator = GetComponent<Animator>();
+	}
 
 	private void Update()
 	{

@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerCombat : MonoBehaviour
 {
 	[SerializeField] HandWeapon _currentWeapon;
-
-	public bool IsAttackEnabled { get;set; }
 
 	PlayerController _controller;
 	Animator _animator;
@@ -15,48 +14,43 @@ public class PlayerCombat : MonoBehaviour
 	{
 		_controller = GetComponent<PlayerController>();
 		_animator = GetComponent<Animator>();
-
-		IsAttackEnabled = true;
 	}
 
 	private void Update()
 	{
-		AttackController();
-	}
+		bool IsAttacking = AttackController();
+		_animator.SetBool("Shooting", IsAttacking);
 
-	private void AttackController()
-	{
-		if (!IsAttackEnabled) 
-			return;
-
-		if (EnemyService.HaveEnemies)
+		if (!IsAttacking)
 		{
-			Enemy targetEnemy = EnemyService.FindClosestEnemy(transform.position);
-
-			if (Vector3.Distance(transform.position, targetEnemy.transform.position) > _currentWeapon.WeaponSettings.Range)
-				return;
-
-			StartCoroutine(Attack(targetEnemy));
+			_animator.speed = 1;
 		}
 	}
 
-	IEnumerator Attack(Enemy targetEnemy)
+	private bool AttackController()
 	{
-		IsAttackEnabled = false;
+		if (_controller.IsMoving || !EnemyService.HaveEnemies) return false;
 
-		if (!_controller.IsMoving)
+		Enemy targetEnemy = EnemyService.FindClosestEnemy(transform.position); 
+			
+		if (targetEnemy)
 		{
-			_controller.Hand.ActivateItem(_currentWeapon.WeaponSettings);
-			_controller.LookAt(targetEnemy.transform.position);
-
-			_animator.SetTrigger("Fire");
+			float enemyDistance = Vector3.Distance(transform.position, targetEnemy.transform.position);
+			if (enemyDistance <= _currentWeapon.WeaponSettings.Range)
+			{
+				_controller.Hand.ActivateItem(_currentWeapon.WeaponSettings);
+				_controller.LookAt(targetEnemy.transform.position);
+				_animator.speed = _currentWeapon.WeaponSettings.FireRate;
+				return true;
+			}
 		}
 
-		yield return new WaitForSeconds(_currentWeapon.WeaponSettings.Cooldown);
-		_controller.Hand.DeactivateAllItems();
-		IsAttackEnabled = true;
+		return false;
 	}
 
+	/// <summary>
+	/// Is called on shooting animation
+	/// </summary>
 	public void Fire()
 	{
 		Enemy targetEnemy = EnemyService.FindClosestEnemy(transform.position);

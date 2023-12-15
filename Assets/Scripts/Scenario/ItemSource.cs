@@ -6,7 +6,7 @@ public class ItemSource : MonoBehaviour, IInteractable
 {
     [SerializeField] ItemSettings _item;
     [SerializeField] int _totalAmount;
-	[SerializeField] public ItemSettings RequiredItem;
+	[SerializeField] public CollectingToolSettings RequiredTool;
 
 	Animator _animator;
 
@@ -29,7 +29,6 @@ public class ItemSource : MonoBehaviour, IInteractable
 			BreakIt();
 		}
 	}
-
 
 	protected virtual void BreakIt()
 	{

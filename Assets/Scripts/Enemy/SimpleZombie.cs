@@ -7,7 +7,7 @@ public class SimpleZombie : MovementBehaviour
 {
     [SerializeField] float _attackRange;
     [SerializeField] int _attackDamage;
-    [SerializeField] float _attackCooldown;
+    [SerializeField, Range(.5f, 5f)] float _attackSpeed;
 
     bool IsAttackEnabled { get; set; }
 
@@ -26,26 +26,30 @@ public class SimpleZombie : MovementBehaviour
 	private void Update()
 	{
 		_agent.SetDestination(Player.transform.position);
-
 		_animator.SetFloat("Velocity", _agent.velocity.normalized.magnitude);
-
-		if (IsAttackEnabled) {
-			if (Vector3.Distance(transform.position, Player.transform.position) <= _attackRange)
-			{
-				StartCoroutine(AttackPlayer());
-			}		
-		}
+		AttackController();
 	}
 
-	public IEnumerator AttackPlayer()
+	public void AttackController()
     {
-		IsAttackEnabled = false;
+		if (IsAttackEnabled)
+		{
+			if (Vector3.Distance(transform.position, Player.transform.position) <= _attackRange)
+			{
+				_animator.SetBool("Attacking", true);
+				_agent.isStopped = true;
+				_animator.speed = _attackSpeed;
+				return;
+			}
+		}
 
+		_animator.SetBool("Attacking", false);
+		_animator.speed = 1;
+		_agent.isStopped = false;
+	}
+
+	public void CauseDamageToPlayer()
+	{
 		Player.TakeDamage(_attackDamage);
-		_animator.SetTrigger("Attack");
-
-		yield return new WaitForSeconds(_attackCooldown);
-
-		IsAttackEnabled = true;
 	}
 }

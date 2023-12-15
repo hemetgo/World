@@ -8,7 +8,7 @@ public class WeaponSettings : ItemSettings
     [SerializeField] public int Damage;
     [SerializeField] public float ProjectileSpeed;
     [SerializeField] public float Range;
-    [SerializeField] public float Cooldown;
+    [SerializeField, Range(.8f, 10)] public float FireRate;
 
     [SerializeField] public Projectile ProjectilePrefab;
 }

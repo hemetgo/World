@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IHealth
 {
-	[field:SerializeField] public int Health { get; set; }
+	[field: SerializeField] public int Health { get; set; }
+	[field: SerializeField] public Transform TargetPoint { get; set; }
 
 
 	private void Awake()

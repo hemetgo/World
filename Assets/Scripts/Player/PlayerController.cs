@@ -6,10 +6,14 @@ public class PlayerController : MonoBehaviour, IHealth
 	[HideInInspector] public PlayerHand Hand;
 	[HideInInspector] public PlayerItemCollector ItemCollector;
 	[HideInInspector] public PlayerCombat Combat;
+	[HideInInspector] public Animator Animator;
 
 	public static PlayerController Instance;
 
+
     public bool IsMoving => Movement.Velocity.magnitude != 0;
+	public bool IsCollecting => Animator.GetBool("Punching");
+	public bool IsShooting => Animator.GetBool("Shooting");
 
 	[field: SerializeField] public int Health { get; set; } = 100;
 
@@ -21,6 +25,8 @@ public class PlayerController : MonoBehaviour, IHealth
 		ItemCollector = GetComponent<PlayerItemCollector>();
 		Hand = GetComponent<PlayerHand>();
 		Combat = GetComponent<PlayerCombat>();
+
+		Animator = GetComponent<Animator>();
 	}
 
 	public void LookAt(Vector3 target)

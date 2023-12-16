@@ -36,7 +36,7 @@ public class PlayerItemCollector : ItemCollector
 
 		if (isCollectEnabled)
 		{
-			_controller.Hand.ActivateItem(_collectingToolSettings);
+			_controller.Hand.ActivateItem(_itemSourcesOnRange[0].RequiredTool);
 			_animator.speed = _collectingToolSettings.Efficiency;
 		}
 		else

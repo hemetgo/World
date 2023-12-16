@@ -5,11 +5,14 @@ using UnityEngine.AI;
 
 public class SimpleZombie : MovementBehaviour
 {
+    [SerializeField] float _detectionRange;
     [SerializeField] float _attackRange;
     [SerializeField] int _attackDamage;
     [SerializeField, Range(.5f, 5f)] float _attackSpeed;
 
-    bool IsAttackEnabled { get; set; }
+	bool IsAggressive => Vector3.Distance(transform.position, Player.transform.position) <= _detectionRange;
+
+	bool IsAttackEnabled { get; set; }
 
 	public bool IsAttacking => _animator.GetCurrentAnimatorStateInfo(0).IsName("Attacking");
 
@@ -23,11 +26,16 @@ public class SimpleZombie : MovementBehaviour
 		IsAttackEnabled = true;
 
 		_animator = GetComponent<Animator>();
+		_agent.updateRotation = false;
 	}
 
 	private void Update()
 	{
+		if (!IsAggressive) return;
+			
 		_agent.SetDestination(Player.transform.position);
+		transform.LookAt(new Vector3(Player.transform.position.x, transform.position.y, Player.transform.position.z));
+
 		_animator.SetFloat("Velocity", _agent.velocity.normalized.magnitude);
 		AttackController();
 	}
@@ -55,7 +63,7 @@ public class SimpleZombie : MovementBehaviour
 	{
 		if (Vector3.Distance(transform.position, Player.transform.position) <= _attackRange * 1.25f)
 		{
-			Player.TakeDamage(_attackDamage);
+			Player.Health.TakeDamage(_attackDamage);
 		}
 	}
 }

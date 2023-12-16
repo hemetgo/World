@@ -7,15 +7,15 @@ public class PlayerHealthUI : MonoBehaviour
 
 	private void OnEnable()
 	{
-		PlayerController.OnPlayerHealthUpdate += UpdateText;
+		GameEvents.Player.OnHealthChanged += UpdateUI;
 	}
 
 	private void OnDisable()
 	{
-		PlayerController.OnPlayerHealthUpdate -= UpdateText;
+		GameEvents.Player.OnHealthChanged -= UpdateUI;
 	}
 
-	void UpdateText(IHealth playerHealth)
+	void UpdateUI(Health playerHealth)
 	{
 		_healthText.text = $"HP:{playerHealth.CurrentHealth}/{playerHealth.MaxHealth}"; 
 	}

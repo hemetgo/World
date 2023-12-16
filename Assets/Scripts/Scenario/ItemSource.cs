@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ItemSource : MonoBehaviour, IInteractable
 {
@@ -32,6 +33,8 @@ public class ItemSource : MonoBehaviour, IInteractable
 
 	protected virtual void BreakIt()
 	{
-		Destroy(gameObject, .15f);
+		_animator.SetTrigger("Fall");
+		GetComponent<NavMeshObstacle>().enabled = false;
+		Destroy(gameObject, 1f);
 	}
 }

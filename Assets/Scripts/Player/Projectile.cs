@@ -26,7 +26,7 @@ public class Projectile : MonoBehaviour
 	{
 		if (other.TryGetComponent(out Enemy enemy))
         {
-            enemy.TakeDamage(_damage);
+            enemy.Health.TakeDamage(_damage);
             OnHit();
 		}
         else if (other.CompareTag("Ground") || other.CompareTag("Wall"))

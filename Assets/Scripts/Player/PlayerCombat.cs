@@ -20,11 +20,6 @@ public class PlayerCombat : MonoBehaviour
 	{
 		bool IsAttacking = AttackController();
 		_animator.SetBool("Shooting", IsAttacking);
-
-		if (!IsAttacking)
-		{
-			_animator.speed = 1;
-		}
 	}
 
 	private bool AttackController()

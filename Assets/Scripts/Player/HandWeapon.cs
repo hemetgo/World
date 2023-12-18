@@ -8,7 +8,7 @@ public class HandWeapon : HandItem
 
 	public WeaponSettings WeaponSettings => ItemSettings as WeaponSettings;
 
-	public void Fire(Enemy enemy)
+	public void Fire(EnemyController enemy)
 	{
 		Projectile projectile = Instantiate(WeaponSettings.ProjectilePrefab);
 		projectile.Setup(_firePoint.position, enemy.TargetPoint.position, WeaponSettings.Damage, WeaponSettings.ProjectileSpeed);

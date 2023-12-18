@@ -11,23 +11,37 @@ public class EnemyWaveController : MonoBehaviour
 
     [SerializeField] List<EnemySpawn> _enemiesPrefabs = new List<EnemySpawn>();
 
-	[SerializeField] int _currentWave;
 	[SerializeField] int _enemiesToSpawn;
 
 	private void Start()
 	{
+		EnemyService.CurrentWave = 0;
 		StartWave();
+	}
+
+	private void OnEnable()
+	{
+		GameEvents.Enemy.OnAllEnemiesDie += StartWave;
+	}
+
+	private void OnDisable()
+	{
+		GameEvents.Enemy.OnAllEnemiesDie -= StartWave;
 	}
 
 	public void StartWave()
     {
+		EnemyService.CurrentWave++;
+
 		for (int i = 0; i < _enemiesToSpawn; i++)
 		{
 			InstantiateRandomEnemy();
 		}
+
+		GameEvents.Enemy.OnWaveStart?.Invoke();
     }
 
-	Enemy InstantiateRandomEnemy()
+	EnemyController InstantiateRandomEnemy()
 	{
 		// Obtém um spawn aleatório
 		EnemySpawn randomSpawn = GetRandomEnemySpawn();
@@ -36,7 +50,7 @@ public class EnemyWaveController : MonoBehaviour
 		Transform spawnPoint = GetRandomSpawnPoint();
 
 		// Instancia o inimigo no ponto de spawn
-		Enemy enemy = Instantiate(randomSpawn.Prefab, spawnPoint.position, Quaternion.identity);
+		EnemyController enemy = Instantiate(randomSpawn.Prefab, spawnPoint.position, Quaternion.identity);
 
 		// Adiciona uma variação aleatória à posição
 		Vector2 randomRange = UnityEngine.Random.insideUnitCircle * _spawnRange;
@@ -89,6 +103,6 @@ public class EnemyWaveController : MonoBehaviour
 [System.Serializable]
 public struct EnemySpawn
 {
-    public Enemy Prefab;
+    public EnemyController Prefab;
     public int Weight;
 }

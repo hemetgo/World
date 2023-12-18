@@ -675,7 +675,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8155163365417611325}
-  - component: {fileID: 2185590310423802838}
+  - component: {fileID: 8543709771641763740}
   - component: {fileID: 4405865252067087402}
   - component: {fileID: 3155945470107081203}
   - component: {fileID: 2082502566169042757}
@@ -705,7 +705,7 @@ Transform:
   - {fileID: 8442693658896461442}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2185590310423802838
+--- !u!114 &8543709771641763740
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -714,7 +714,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5126289456116498699}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 406cd760a5969fd4fb12285940eb300f, type: 3}
+  m_Script: {fileID: 11500000, guid: 38cbc9c4902ecb147b1cff733630729e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <TargetPoint>k__BackingField: {fileID: 8442693658896461442}
@@ -746,7 +746,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 1.5
-  _detectionRange: 7
+  _detectionRange: 20
   _attackRange: 1.2
   _attackDamage: 25
   _attackSpeed: 1.5

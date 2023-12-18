@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class PlayerItemCollector : ItemCollector
 {
-	[SerializeField] CollectingToolSettings _collectingToolSettings;
+	[SerializeField] CollectingToolSettings _axeSettings;
 
 	PlayerController _controller;
 	Animator _animator;
@@ -36,13 +36,13 @@ public class PlayerItemCollector : ItemCollector
 
 		if (isCollectEnabled)
 		{
-			_controller.Hand.ActivateItem(_itemSourcesOnRange[0].RequiredTool);
-			_animator.speed = _collectingToolSettings.Efficiency;
+			_animator.speed = _axeSettings.Efficiency;
 		}
-		else
-		{
-			_controller.Hand.DeactivateAllItems();
-			_animator.speed = 1;
-		}
+	}
+
+	public ItemSettings GetRequiredCollectingTool()
+	{
+		if (_itemSourcesOnRange.Count > 0) return _itemSourcesOnRange[0].RequiredTool;
+		else return null;
 	}
 }

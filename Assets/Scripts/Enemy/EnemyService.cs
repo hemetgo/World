@@ -1,32 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyService 
 {
-    public static List<Enemy> Enemies = new List<Enemy>();
+	public static List<EnemyController> Enemies { get; set; } = new List<EnemyController>();
+    public static int CurrentWave { get; set; }
 
 	public static bool HaveEnemies => Enemies.Count > 0;
 
-    public static void RegisterEnemy(Enemy enemy)
+    public static void RegisterEnemy(EnemyController enemy)
     { 
         Enemies.Add(enemy); 
     }
 
-    public static void UnregisterEnemy(Enemy enemy)
+    public static void UnregisterEnemy(EnemyController enemy)
     {
         Enemies.Remove(enemy);
+
+		GameEvents.Enemy.OnEnemyDie?.Invoke(enemy);
+
+		if (Enemies.Count == 0)
+		{
+			GameEvents.Enemy.OnAllEnemiesDie?.Invoke();
+		}
     }
 
-	public static Enemy FindClosestEnemy(Vector3 position)
+	public static EnemyController FindClosestEnemy(Vector3 position)
 	{
 		if (Enemies.Count == 0)
 		{
 			return null;
 		}
 
-		Enemy closestEnemy = Enemies
+		EnemyController closestEnemy = Enemies
 			.OrderBy(enemy => Vector3.Distance(position, enemy.transform.position))
 			.FirstOrDefault();
 

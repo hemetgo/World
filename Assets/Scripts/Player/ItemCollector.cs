@@ -22,8 +22,6 @@ public class ItemCollector : MonoBehaviour
 		}
 	}
 
-	public ScriptableEvent OnCollectStart;
-
 	protected virtual void Awake()
 	{
 	}
@@ -31,7 +29,6 @@ public class ItemCollector : MonoBehaviour
 	protected virtual void Update()
 	{
 	}
-
 
 	public virtual void CollectItems()
 	{

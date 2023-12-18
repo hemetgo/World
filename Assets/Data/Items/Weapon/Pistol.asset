@@ -16,7 +16,7 @@ MonoBehaviour:
   <Name>k__BackingField: Pistol
   <Category>k__BackingField: {fileID: 11400000, guid: a76bc799baae91044ae4655fe87dc19c,
     type: 2}
-  Damage: 10
+  Damage: 25
   ProjectileSpeed: 15
   Range: 5
   FireRate: 1

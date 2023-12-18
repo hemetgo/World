@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class PlayerCombat : MonoBehaviour
 {
-	[SerializeField] HandWeapon _currentWeapon;
+	[field: SerializeField] public WeaponSettings CurrentWeaponSettings { get; set; }
+	[HemetTools.Inspector.ReadOnly] HandWeapon _currentHandWeapon;
 
 	PlayerController _controller;
 	Animator _animator;
@@ -14,6 +13,8 @@ public class PlayerCombat : MonoBehaviour
 	{
 		_controller = GetComponent<PlayerController>();
 		_animator = GetComponent<Animator>();
+
+		SetCurrentWeapon(CurrentWeaponSettings);
 	}
 
 	private void Update()
@@ -22,20 +23,25 @@ public class PlayerCombat : MonoBehaviour
 		_animator.SetBool("Shooting", IsAttacking);
 	}
 
+	public void SetCurrentWeapon(WeaponSettings settings) 
+	{
+		CurrentWeaponSettings = settings;
+		_currentHandWeapon = _controller.Hand.GetWeapon(settings);
+	}
+
 	private bool AttackController()
 	{
 		if (_controller.IsMoving || !EnemyService.HaveEnemies) return false;
 
-		Enemy targetEnemy = EnemyService.FindClosestEnemy(transform.position); 
+		EnemyController targetEnemy = EnemyService.FindClosestEnemy(transform.position); 
 			
 		if (targetEnemy)
 		{
 			float enemyDistance = Vector3.Distance(transform.position, targetEnemy.transform.position);
-			if (enemyDistance <= _currentWeapon.WeaponSettings.Range)
+			if (enemyDistance <= CurrentWeaponSettings.Range)
 			{
-				_controller.Hand.ActivateItem(_currentWeapon.WeaponSettings);
 				_controller.LookAt(targetEnemy.transform.position);
-				_animator.speed = _currentWeapon.WeaponSettings.FireRate;
+				_animator.speed = CurrentWeaponSettings.FireRate;
 				return true;
 			}
 		}
@@ -48,7 +54,7 @@ public class PlayerCombat : MonoBehaviour
 	/// </summary>
 	public void Fire()
 	{
-		Enemy targetEnemy = EnemyService.FindClosestEnemy(transform.position);
-		_currentWeapon.Fire(targetEnemy);
+		EnemyController targetEnemy = EnemyService.FindClosestEnemy(transform.position);
+		_currentHandWeapon.Fire(targetEnemy);
 	}
 }

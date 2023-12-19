@@ -16,9 +16,11 @@ MonoBehaviour:
   <Name>k__BackingField: Pistol
   <Category>k__BackingField: {fileID: 11400000, guid: a76bc799baae91044ae4655fe87dc19c,
     type: 2}
-  Damage: 25
-  ProjectileSpeed: 15
-  Range: 5
-  FireRate: 1
-  ProjectilePrefab: {fileID: -4458612608805561231, guid: 3adcf1d2791fe7c4ebbf013bf72b7eda,
+  <Damage>k__BackingField: 10
+  <ProjectileSpeed>k__BackingField: 12
+  <Range>k__BackingField: 10
+  <FireRate>k__BackingField: 1.5
+  <ProjectilePrefab>k__BackingField: {fileID: -4458612608805561231, guid: 3adcf1d2791fe7c4ebbf013bf72b7eda,
+    type: 3}
+  <MuzzleFlashPrefab>k__BackingField: {fileID: 3266849130705777164, guid: 081436239cb74f74d80f2ad966c84184,
     type: 3}

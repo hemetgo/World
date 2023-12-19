@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] int _damage;
+    [SerializeField] GameObject _hitVfx;
 
     public void Setup(Vector3 spawnPoint, Vector3 targetPosition, int damage, float moveSpeed)
     {
@@ -19,6 +20,7 @@ public class Projectile : MonoBehaviour
 
     private void OnHit()
     {
+        Instantiate(_hitVfx, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 

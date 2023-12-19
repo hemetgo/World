@@ -152,9 +152,7 @@ MonoBehaviour:
   _delayToStart: 0.3
   _delayToEnd: 0.6
   _itemSourcesOnRange: []
-  OnCollectStart: {fileID: 11400000, guid: bb54d7b431289bc49b2869da7df41dce, type: 2}
-  _collectingToolSettings: {fileID: 11400000, guid: 0907ccd0dafb977438bc0f18b8002f44,
-    type: 2}
+  _axeSettings: {fileID: 0}
 --- !u!114 &8963036439670095445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,7 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d240bd773538bf443bbc47f360c82e0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentWeapon: {fileID: 217712752390240674}
+  <CurrentWeaponSettings>k__BackingField: {fileID: 0}
 --- !u!95 &4403099663566252656
 Animator:
   serializedVersion: 5
@@ -223,7 +221,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126

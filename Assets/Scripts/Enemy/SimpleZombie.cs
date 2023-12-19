@@ -2,41 +2,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 public class SimpleZombie : MovementBehaviour
 {
-    [SerializeField] float _detectionRange;
-    [SerializeField] float _attackRange;
-    [SerializeField] int _attackDamage;
-    [SerializeField, Range(.5f, 5f)] float _attackSpeed;
+	[SerializeField] float _detectionRange;
+	[SerializeField] float _attackRange;
+	[SerializeField] int _attackDamage;
+	[SerializeField, Range(.5f, 5f)] float _attackSpeed;
 
-	bool IsAggressive => Vector3.Distance(transform.position, Player.transform.position) <= _detectionRange;
+	bool _isAggressive;
+	bool IsAggressive
+	{
+		get
+		{
+			if (_isAggressive == true) 
+				return true;
 
+			_isAggressive = Vector3.Distance(transform.position, Player.transform.position) <= _detectionRange;
+			return _isAggressive;
+		}
+	}
 	bool IsAttackEnabled { get; set; }
 
-	public bool IsAttacking => _animator.GetCurrentAnimatorStateInfo(0).IsName("Attacking");
+	public bool IsAttacking => _controller.Animator.GetCurrentAnimatorStateInfo(0).IsName("Attacking");
 
 	PlayerController Player => PlayerController.Instance;
-	Animator _animator;
+	EnemyController _controller;
 
 	protected override void Awake()
 	{
 		base.Awake();
 
+		_controller = GetComponent<EnemyController>();
+
 		IsAttackEnabled = true;
 
-		_animator = GetComponent<Animator>();
+		_controller.Animator = GetComponent<Animator>();
 		_agent.updateRotation = false;
 	}
 
 	private void Update()
 	{
+		if (_controller.Health.IsDead)
+		{
+			_agent.isStopped = true;
+			return;
+		}
+
 		if (!IsAggressive) return;
 			
 		_agent.SetDestination(Player.transform.position);
 		transform.LookAt(new Vector3(Player.transform.position.x, transform.position.y, Player.transform.position.z));
 
-		_animator.SetFloat("Velocity", _agent.velocity.normalized.magnitude);
+		_controller.Animator.SetFloat("Velocity", _agent.velocity.normalized.magnitude);
 		AttackController();
 	}
 
@@ -48,14 +67,14 @@ public class SimpleZombie : MovementBehaviour
 		{
 			if (Vector3.Distance(transform.position, Player.transform.position) <= _attackRange)
 			{
-				_animator.SetBool("Attacking", true);
-				_animator.speed = _attackSpeed;
+				_controller.Animator.SetBool("Attacking", true);
+				_controller.Animator.speed = _attackSpeed;
 				return;
 			}
 		}
 
-		_animator.SetBool("Attacking", false);
-		_animator.speed = 1;
+		_controller.Animator.SetBool("Attacking", false);
+		_controller.Animator.speed = 1;
 
 	}
 

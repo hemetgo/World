@@ -11,6 +11,7 @@ public class HandWeapon : HandItem
 	public void Fire(EnemyController enemy)
 	{
 		Projectile projectile = Instantiate(WeaponSettings.ProjectilePrefab);
+		GameObject muzzleFlash = Instantiate(WeaponSettings.MuzzleFlashPrefab, _firePoint.position, transform.rotation);
 		projectile.Setup(_firePoint.position, enemy.TargetPoint.position, WeaponSettings.Damage, WeaponSettings.ProjectileSpeed);
 	}
 }

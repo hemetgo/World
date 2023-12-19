@@ -5,10 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Survival/Item/Weapon")]
 public class WeaponSettings : ItemSettings
 {
-    [SerializeField] public int Damage;
-    [SerializeField] public float ProjectileSpeed;
-    [SerializeField] public float Range;
-    [SerializeField, Range(.8f, 10)] public float FireRate;
+	[field: SerializeField] public int Damage { get; set; }
+	[field: SerializeField] public float ProjectileSpeed { get; set; }
+	[field: SerializeField] public float Range { get; set; }
+	[field: SerializeField, Range(.8f, 10)] public float FireRate { get; set; }
 
-    [SerializeField] public Projectile ProjectilePrefab;
+	[field: SerializeField] public Projectile ProjectilePrefab { get; set; }
+	[field: SerializeField] public GameObject MuzzleFlashPrefab { get; set; }
 }

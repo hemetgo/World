@@ -5,6 +5,7 @@ public class GameEvents
     public class Player
     {
         public static Action<Health> OnHealthChanged;
+        public static Action OnTakeDamage;
     }
 
     public class Enemy

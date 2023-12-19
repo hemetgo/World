@@ -19,8 +19,8 @@ public class PlayerCombat : MonoBehaviour
 
 	private void Update()
 	{
-		bool IsAttacking = AttackController();
-		_animator.SetBool("Shooting", IsAttacking);
+		bool isAttacking = AttackController();
+		_animator.SetBool("Shooting", isAttacking);
 	}
 
 	public void SetCurrentWeapon(WeaponSettings settings) 

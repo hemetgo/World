@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
 
 public class CurrencyService
 {
@@ -104,9 +103,11 @@ public class CurrencyService
         OnAnyCurrencyUpdated?.Invoke();
     }
 
+#if UNITY_EDITOR
     [MenuItem("HemetTools/Currency/Reset currencies")]
+#endif
     public static void ResetCurrencies()
-    {
+	{
         currencyData.Reset();
         DataManager.Save(currencyData);
 

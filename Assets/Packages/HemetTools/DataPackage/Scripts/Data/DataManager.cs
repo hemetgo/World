@@ -39,15 +39,19 @@ public class DataManager
         }
     }
 
+#if UNITY_EDITOR
     [MenuItem("HemetTools/Save System/Open save folder")]
-    public static void OpenSaveFolder()
+#endif
+	public static void OpenSaveFolder()
     {
         string appDataPath = Application.persistentDataPath;
         System.Diagnostics.Process.Start(appDataPath);
     }
 
-    [MenuItem("HemetTools/Save System/Clear all saved data")]
-    public static void ClearAllSavedData()
+#if UNITY_EDITOR
+	[MenuItem("HemetTools/Save System/Clear all saved data")]
+#endif
+	public static void ClearAllSavedData()
     {
         string savePath = Application.persistentDataPath;
 

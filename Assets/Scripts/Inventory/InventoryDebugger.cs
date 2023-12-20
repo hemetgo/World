@@ -7,6 +7,7 @@ public class InventoryDebugger : MonoBehaviour
 	[SerializeField] ItemSettings _item;
 	[SerializeField] int _amount;
 
+#if UNITY_EDITOR
 	[Button]
 	public void AddItem()
 	{
@@ -24,4 +25,5 @@ public class InventoryDebugger : MonoBehaviour
 	{
 		InventoryService.ClearInventory();
 	}
+#endif
 }

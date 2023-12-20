@@ -38,8 +38,9 @@ public class TreeGenerator : MonoBehaviour
 		return _treePrefabs[0].Prefab;
 	}
 
+#if UNITY_EDITOR
 	[Button]
-
+#endif
 	public void GenerateTrees()
 	{
 		if (_clearCurrentTrees)
@@ -137,7 +138,9 @@ public class TreeGenerator : MonoBehaviour
 		return true;
 	}
 
+#if UNITY_EDITOR
 	[Button]
+#endif
 	public void ClearTrees()
 	{
 		_spawnedTrees.ForEach(tree => DestroyImmediate(tree.gameObject));

@@ -55,7 +55,9 @@ public class InventoryService
 		OnInventoryChanged?.Invoke();
 	}
 
+#if UNITY_EDITOR
 	[MenuItem("HemetTools/Inventory/Clear Inventory")]
+#endif
 	public static void ClearInventory()
 	{
 		EnsureData();

@@ -13,7 +13,7 @@ public class InventoryUI : MonoBehaviour
 
 	private void Start()
 	{
-        LoadItems();
+        LoadItemsOnUI();
 	}
 
 	private void OnEnable()
@@ -32,7 +32,7 @@ public class InventoryUI : MonoBehaviour
 
 	void OnInventoryCleared()
 	{
-		LoadItems();
+		LoadItemsOnUI();
 	}
 
 	void OnItemAdded(ItemSettings settings, ItemData item)
@@ -65,7 +65,7 @@ public class InventoryUI : MonoBehaviour
 		}
 	}
 
-	void LoadItems()
+	void LoadItemsOnUI()
     {
 		foreach(InventoryItemUI uiItem in _uiItems.Values)
 		{

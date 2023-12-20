@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
-		if (!IsMoving && !IsShooting) 
+		if (!IsCollecting && !IsShooting) 
 		{
 			Animator.speed = 1;
 		}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
+using static GameEvents;
 
 public class SimpleZombie : MovementBehaviour
 {
@@ -16,6 +17,9 @@ public class SimpleZombie : MovementBehaviour
 	{
 		get
 		{
+			if (Player == null)
+				return false;
+
 			if (_isAggressive == true) 
 				return true;
 
@@ -51,7 +55,13 @@ public class SimpleZombie : MovementBehaviour
 		}
 
 		if (!IsAggressive) return;
-			
+
+		if (Player == null)
+		{
+			_agent.isStopped = true; 
+			return;
+		}
+
 		_agent.SetDestination(Player.transform.position);
 		transform.LookAt(new Vector3(Player.transform.position.x, transform.position.y, Player.transform.position.z));
 
@@ -61,6 +71,9 @@ public class SimpleZombie : MovementBehaviour
 
 	public void AttackController()
     {
+		if (Player.Health.IsDead) 
+			return;
+
 		_agent.isStopped = IsAttacking;
 		
 		if (IsAttackEnabled)
@@ -80,6 +93,9 @@ public class SimpleZombie : MovementBehaviour
 
 	public void CauseDamageToPlayer()
 	{
+		if (Player == null || Player.Health.IsDead) 
+			return;
+
 		if (Vector3.Distance(transform.position, Player.transform.position) <= _attackRange * 1.25f)
 		{
 			Player.Health.TakeDamage(_attackDamage);

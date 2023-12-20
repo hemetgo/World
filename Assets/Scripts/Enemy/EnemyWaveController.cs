@@ -1,108 +1,112 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyWaveController : MonoBehaviour
 {
 	[SerializeField] Terrain _terrain;
 	[SerializeField] List<Transform> _spawnPoints = new List<Transform>();
-	[SerializeField] float _spawnRange;
 
-    [SerializeField] List<EnemySpawn> _enemiesPrefabs = new List<EnemySpawn>();
+	[SerializeField] EnemyWaveSettings _waveSettings;
+	public static int CurrentWave { get; set; }
 
-	[SerializeField] int _enemiesToSpawn;
+	public static WavePhase CurrentPhase;
+	public static float PrepareWaveTimer;
 
 	private void Start()
 	{
-		EnemyService.CurrentWave = 0;
-		StartWave();
+		CurrentWave = 0;
+		StartCoroutine(StartWaveTimer(0, _waveSettings.PrepareWaveTime));
 	}
 
 	private void OnEnable()
 	{
-		GameEvents.Enemy.OnAllEnemiesDie += StartWave;
+		GameEvents.Enemy.OnAllEnemiesDie += FinishWave;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.Enemy.OnAllEnemiesDie -= StartWave;
+		GameEvents.Enemy.OnAllEnemiesDie -= FinishWave;
+	}
+
+	IEnumerator StartWaveTimer(float waveWaitTime, float prepareWaveTime)
+	{
+		SetPhase(WavePhase.Waiting);
+		yield return new WaitForSeconds(waveWaitTime);
+		SetPhase(WavePhase.Preparing);
+
+		PrepareWaveTimer = prepareWaveTime;
+
+		while (PrepareWaveTimer > 0)
+		{
+			PrepareWaveTimer -= Time.deltaTime;
+			yield return null;
+		}
+
+		StartWave();
 	}
 
 	public void StartWave()
     {
-		EnemyService.CurrentWave++;
+		CurrentWave++;
 
-		for (int i = 0; i < _enemiesToSpawn; i++)
+		for (int i = 0; i < _waveSettings.EnemiesToSpawn[CurrentWave]; i++)
 		{
 			InstantiateRandomEnemy();
 		}
 
-		GameEvents.Enemy.OnWaveStart?.Invoke();
-    }
+		SetPhase(WavePhase.InProgress);
+	}
+
+	public void FinishWave()
+	{
+		if (CurrentWave >= _waveSettings.EnemiesToSpawn.Length - 1)
+		{
+			GameEvents.Game.Victory?.Invoke();
+			return;
+		}
+
+		StartCoroutine(StartWaveTimer(_waveSettings.WaveWaitTime, _waveSettings.PrepareWaveTime));
+
+		SetPhase(WavePhase.Completed);
+	}
 
 	EnemyController InstantiateRandomEnemy()
 	{
-		// Obtém um spawn aleatório
-		EnemySpawn randomSpawn = GetRandomEnemySpawn();
-
-		// Obtém um ponto de spawn aleatório
+		EnemySpawn randomSpawn = _waveSettings.GetRandomEnemySpawn();
 		Transform spawnPoint = GetRandomSpawnPoint();
 
-		// Instancia o inimigo no ponto de spawn
-		EnemyController enemy = Instantiate(randomSpawn.Prefab, spawnPoint.position, Quaternion.identity);
+		Vector2 randomRange = UnityEngine.Random.insideUnitCircle * _waveSettings.SpawnRange;
+		Vector3 spawnPosition = spawnPoint.position + new Vector3(randomRange.x, 0, randomRange.y);
+		NavMesh.SamplePosition(spawnPosition, out NavMeshHit navHit, 5, NavMesh.AllAreas);
+		spawnPosition = navHit.position;
 
-		// Adiciona uma variação aleatória à posição
-		Vector2 randomRange = UnityEngine.Random.insideUnitCircle * _spawnRange;
-		enemy.transform.Translate(randomRange.x, 0, randomRange.y);
+		EnemyController enemy = Instantiate(randomSpawn.Prefab, spawnPosition, Quaternion.identity);
+		Instantiate(_waveSettings.EnemySpawnVFX, enemy.transform.position, Quaternion.identity);
 
-		// Define a altura do inimigo para a altura do terreno no ponto de spawn
 		float terrainHeight = _terrain.SampleHeight(enemy.transform.position);
 		enemy.transform.position = new Vector3(enemy.transform.position.x, terrainHeight, enemy.transform.position.z);
-
-		// Define o pai do inimigo para o objeto transform
 		enemy.transform.SetParent(transform);
 
 		return enemy;
-	}
-
-	EnemySpawn GetRandomEnemySpawn()
-	{
-		int totalWeight = 0;
-
-		// Calcula o peso total
-		foreach (var spawn in _enemiesPrefabs)
-		{
-			totalWeight += spawn.Weight;
-		}
-
-		// Seleciona um número aleatório dentro do intervalo total de pesos
-		int randomValue = UnityEngine.Random.Range(0, totalWeight);
-
-		// Itera sobre a lista até encontrar o spawn correspondente ao número aleatório
-		foreach (var spawn in _enemiesPrefabs)
-		{
-			if (randomValue < spawn.Weight)
-			{
-				return spawn;
-			}
-
-			randomValue -= spawn.Weight;
-		}
-
-		// Caso não seja encontrado nenhum spawn (isso não deve acontecer se os pesos estiverem configurados corretamente)
-		throw new Exception("Nenhum spawn foi selecionado. Verifique os pesos.");
 	}
 
 	Transform GetRandomSpawnPoint()
 	{
 		return _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Count)];
 	}
+
+	void SetPhase(WavePhase phase)
+	{
+		CurrentPhase = phase;
+		GameEvents.Enemy.OnWaveChangePhase?.Invoke(phase);
+	}
 }
 
-[System.Serializable]
-public struct EnemySpawn
+public enum WavePhase
 {
-    public EnemyController Prefab;
-    public int Weight;
+	Waiting, Preparing, InProgress, Completed
 }

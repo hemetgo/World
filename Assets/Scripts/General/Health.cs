@@ -8,6 +8,8 @@ public class Health : MonoBehaviour
     [field: SerializeField] public int MaxHealth { get; set; }
 	[field:SerializeField, ReadOnly] public int CurrentHealth { get; set; }
 
+	public bool IsDead => CurrentHealth <= 0;
+
 	protected virtual void Awake()
 	{
         Initialize();

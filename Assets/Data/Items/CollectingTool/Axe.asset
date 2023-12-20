@@ -16,4 +16,4 @@ MonoBehaviour:
   <Name>k__BackingField: Axe
   <Category>k__BackingField: {fileID: 11400000, guid: becfc033ecafd344c800cbdf252f5e6c,
     type: 2}
-  Efficiency: 10
+  Efficiency: 1.25

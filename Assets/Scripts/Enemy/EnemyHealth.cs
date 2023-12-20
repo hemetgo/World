@@ -12,8 +12,6 @@ public class EnemyHealth : Health
 		_controller = GetComponent<EnemyController>();
 	}
 
-	public bool IsDead => CurrentHealth <= 0;
-
 	public override void Die()
 	{
 		_controller.Animator.SetTrigger("Die");

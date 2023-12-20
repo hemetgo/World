@@ -18,4 +18,9 @@ public class EnemyController : MonoBehaviour
 
 		EnemyService.RegisterEnemy(this);
 	}
+
+	private void OnDestroy()
+	{
+		EnemyService.UnregisterEnemy(this);
+	}
 }

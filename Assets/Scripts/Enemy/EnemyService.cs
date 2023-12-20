@@ -7,7 +7,6 @@ using UnityEngine;
 public class EnemyService 
 {
 	public static List<EnemyController> Enemies { get; set; } = new List<EnemyController>();
-    public static int CurrentWave { get; set; }
 
 	public static bool HaveEnemies => Enemies.Count > 0;
 
@@ -18,6 +17,9 @@ public class EnemyService
 
     public static void UnregisterEnemy(EnemyController enemy)
     {
+		if (!Enemies.Contains(enemy))
+			return;
+
         Enemies.Remove(enemy);
 
 		GameEvents.Enemy.OnEnemyDie?.Invoke(enemy);

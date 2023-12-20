@@ -18,7 +18,7 @@ public class WaveUI : MonoBehaviour
 	{
 		if (EnemyWaveController.CurrentPhase == WavePhase.Preparing)
 		{
-			_startingText.text = $"Wave starting in {EnemyWaveController.PrepareWaveTimer.ToString("0.0")}s";
+			_startingText.text = $"Wave {EnemyWaveController.CurrentWave + 1} starting in {EnemyWaveController.PrepareWaveTimer.ToString("0.0")}s";
 		}
 	}
 

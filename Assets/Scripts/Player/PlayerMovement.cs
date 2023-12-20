@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 public class PlayerMovement : MovementBehaviour
 {
+	Vector2 _movementInput;
 	Animator _animator;
 
 	public Vector2 Velocity => _agent.velocity;
@@ -20,14 +21,18 @@ public class PlayerMovement : MovementBehaviour
 
 	private void Update()
 	{
-		MoveTo(Joystick.Input.Direction.normalized);
+		_movementInput = Joystick.Input.Direction.normalized;
+		if (_movementInput.magnitude == 0)
+			_movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
+
+		MoveTo(_movementInput);
 
 		AnimationControl();
 	}
 
 	void AnimationControl()
 	{
-		transform.LookAt(transform.position + new Vector3(Joystick.Input.Direction.normalized.x, 0, Joystick.Input.Direction.normalized.y)); 
+		transform.LookAt(transform.position + new Vector3(_movementInput.x, 0, _movementInput.y)); 
 		_animator.SetFloat("Movement", _agent.velocity.normalized.magnitude);
 	}
 }

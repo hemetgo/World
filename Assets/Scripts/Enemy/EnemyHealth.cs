@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyHealth : Health
 {
+	public GameObject BloodVFX;
+
 	EnemyController _controller;
 
 	protected override void Awake()

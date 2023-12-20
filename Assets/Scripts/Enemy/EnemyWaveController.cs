@@ -51,12 +51,12 @@ public class EnemyWaveController : MonoBehaviour
 
 	public void StartWave()
     {
-		CurrentWave++;
-
 		for (int i = 0; i < _waveSettings.EnemiesToSpawn[CurrentWave]; i++)
 		{
 			InstantiateRandomEnemy();
 		}
+
+		CurrentWave++;
 
 		SetPhase(WavePhase.InProgress);
 	}

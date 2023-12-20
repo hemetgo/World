@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damage: 10
-  _hitVfx: {fileID: 4553287630450876385, guid: c42d67ef214ddf54783c7058c9aeebe6, type: 3}
+  _hitVFX: {fileID: 7010836221941650399, guid: 63d44c4b3b20ae742aa354305e3ebfbf, type: 3}
 --- !u!54 &-5283729759109255829
 Rigidbody:
   m_ObjectHideFlags: 0

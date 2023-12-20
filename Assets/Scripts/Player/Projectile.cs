@@ -5,7 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] int _damage;
-    [SerializeField] GameObject _hitVfx;
+    [SerializeField] GameObject _hitVFX;
 
     public void Setup(Vector3 spawnPoint, Vector3 targetPosition, int damage, float moveSpeed)
     {
@@ -18,9 +18,9 @@ public class Projectile : MonoBehaviour
         _damage = damage;
     }
 
-    private void OnHit()
+    private void OnHit(GameObject vfx)
     {
-        Instantiate(_hitVfx, transform.position, Quaternion.identity);
+        Instantiate(vfx, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 
@@ -29,11 +29,11 @@ public class Projectile : MonoBehaviour
 		if (other.TryGetComponent(out EnemyController enemy))
         {
             enemy.Health.TakeDamage(_damage);
-            OnHit();
+            OnHit(enemy.Health.BloodVFX);
 		}
         else if (other.CompareTag("Ground") || other.CompareTag("Wall"))
         {
-			OnHit();
+			OnHit(_hitVFX);
 		}
 	}
 }

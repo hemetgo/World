@@ -1,10 +1,10 @@
-using System.ComponentModel;
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-	[field: SerializeField] public WeaponSettings CurrentWeaponSettings { get; set; }
-	[HemetTools.Inspector.ReadOnly] HandWeapon _currentHandWeapon;
+	[field: SerializeField] public ItemCategorySettings WeaponCategory { get; set; }
+
+	HandWeapon CurrentWeapon => _controller.Hand.CurrentHandItem as HandWeapon;
 
 	PlayerController _controller;
 	Animator _animator;
@@ -13,8 +13,6 @@ public class PlayerCombat : MonoBehaviour
 	{
 		_controller = GetComponent<PlayerController>();
 		_animator = GetComponent<Animator>();
-
-		SetCurrentWeapon(CurrentWeaponSettings);
 	}
 
 	private void Update()
@@ -23,14 +21,11 @@ public class PlayerCombat : MonoBehaviour
 		_animator.SetBool("Shooting", isAttacking);
 	}
 
-	public void SetCurrentWeapon(WeaponSettings settings) 
-	{
-		CurrentWeaponSettings = settings;
-		_currentHandWeapon = _controller.Hand.GetWeapon(settings);
-	}
-
 	private bool AttackController()
 	{
+		if (_controller.Hand.IsHolding(WeaponCategory) == false) 
+			return false;
+
 		if (_controller.IsMoving || !EnemyService.HaveEnemies) return false;
 
 		EnemyController targetEnemy = EnemyService.FindClosestEnemy(transform.position); 
@@ -38,10 +33,10 @@ public class PlayerCombat : MonoBehaviour
 		if (targetEnemy)
 		{
 			float enemyDistance = Vector3.Distance(transform.position, targetEnemy.transform.position);
-			if (enemyDistance <= CurrentWeaponSettings.Range)
+			if (enemyDistance <= CurrentWeapon.WeaponSettings.Range)
 			{
 				_controller.LookAt(targetEnemy.transform.position);
-				_animator.speed = CurrentWeaponSettings.FireRate;
+				_animator.speed = CurrentWeapon.WeaponSettings.FireRate;
 				return true;
 			}
 		}
@@ -55,6 +50,6 @@ public class PlayerCombat : MonoBehaviour
 	public void Fire()
 	{
 		EnemyController targetEnemy = EnemyService.FindClosestEnemy(transform.position);
-		_currentHandWeapon.Fire(targetEnemy);
+		CurrentWeapon.Fire(targetEnemy);
 	}
 }

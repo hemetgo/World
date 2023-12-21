@@ -6,5 +6,7 @@ using UnityEngine;
 public class ItemSettings : SaveScriptable
 {
 	[field: SerializeField] public string Name { get; set; }
+	[field: SerializeField] public Sprite Icon { get; set; }
 	[field: SerializeField] public ItemCategorySettings Category { get; set; }
+	[field: SerializeField] public bool Cumulative { get; set; }
 }

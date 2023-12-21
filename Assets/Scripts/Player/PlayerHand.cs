@@ -1,38 +1,58 @@
 using System.Collections.Generic;
+using System.Net;
 using UnityEditor.Rendering;
 using UnityEngine;
 
 public class PlayerHand : MonoBehaviour
 {
-	[SerializeField] HandItem _currentItem;
-    [SerializeField] List<HandItem> _items = new List<HandItem>();
+	[SerializeField] List<ItemSettings> _initialItems = new List<ItemSettings>();
+	
+	[SerializeField] List<HandItem> _handItems = new List<HandItem>();
 
-	PlayerController _controller;
+	List<ItemData> InventoryItems => InventoryService.GetItems();
+
+	public static int CurrentHandItemIndex;
+	public HandItem CurrentHandItem
+	{
+		get
+		{
+			if (InventoryItems.Count == 0)
+				return null;
+
+			foreach(HandItem handItem in _handItems)
+			{
+				if (handItem.ItemSettings.SaveID == InventoryItems[CurrentHandItemIndex].SaveID)
+				{
+					return handItem;
+				}
+			}
+
+			return null;
+		}
+	}
 
 	private void Awake()
 	{
-		_controller = GetComponent<PlayerController>();
+		InventoryService.ClearInventory();
+		_initialItems.ForEach(item => InventoryService.AddItem(item, 1));
 	}
 
-	private void Update()
+	public bool IsHolding(ItemCategorySettings categorySettings)
 	{
-		if (_controller.IsCollecting)
+		if (CurrentHandItem == null) 
+			return false;
+
+		if (CurrentHandItem.ItemSettings.Category == categorySettings)
 		{
-			ActivateItem(_controller.ItemCollector.GetRequiredCollectingTool());
+			return true;
 		}
-		else if (_controller.IsShooting)
-		{
-			ActivateItem(_controller.Combat.CurrentWeaponSettings);
-		}
-		else
-		{
-			DeactivateAllItems();
-		}
+
+		return false;
 	}
 
 	public HandWeapon GetWeapon(WeaponSettings settings)
 	{
-		foreach (HandItem item in _items)
+		foreach (HandItem item in _handItems)
 		{
 			if (item.ItemSettings == settings)
 			{
@@ -45,25 +65,25 @@ public class PlayerHand : MonoBehaviour
 
 	public void DeactivateAllItems()
 	{
-		_items.ForEach(item => item.gameObject.SetActive(false));
-		_currentItem = null;
+		_handItems.ForEach(item => item.gameObject.SetActive(false));
 	}
 
-	public void ActivateItem(ItemSettings itemSettings)
+	public void UpdateHand()
 	{
-		if (itemSettings == null) return;
-
-		foreach (HandItem item in _items)
+		foreach (HandItem item in _handItems)
 		{
-			if (item.ItemSettings == itemSettings)
-			{
-				item.gameObject.SetActive(true);
-				_currentItem = item;
-			}
-			else
-			{
-				item.gameObject.SetActive(false);
-			}
+			item.gameObject.SetActive(item.ItemSettings == CurrentHandItem.ItemSettings);
 		}
+	}
+
+	public void NextItem()
+	{
+		CurrentHandItemIndex++;
+		if (CurrentHandItemIndex >= InventoryService.GetItems().Count)
+		{
+			CurrentHandItemIndex = 0;
+		}
+
+		UpdateHand();
 	}
 }

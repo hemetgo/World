@@ -15,6 +15,11 @@ public class PlayerHealth : Health
 		_controller = GetComponent<PlayerController>();
 	}
 
+	private void Start()
+	{
+		GameEvents.Player.OnHealthChanged?.Invoke(this);
+	}
+
 	public override void TakeDamage(int damage)
 	{
 		base.TakeDamage(damage);

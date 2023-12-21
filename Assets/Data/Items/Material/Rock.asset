@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <SaveID>k__BackingField: rock
   <Name>k__BackingField: Rock
+  <Cumulative>k__BackingField: 1
   <Category>k__BackingField: {fileID: 11400000, guid: f6d6bd988d22cb44986ac20ab049b6f1,
     type: 2}

@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using HemetTools.Inspector;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField] Transform _uiItemsParent;
     [SerializeField] InventoryItemUI _inventoryUIItemPrefab;
 
-    [SerializeField] Dictionary<string, InventoryItemUI> _uiItems = new Dictionary<string, InventoryItemUI>();
+    [SerializeField] List<InventoryItemUI> _uiItems = new List<InventoryItemUI>();
 
 
-	private void Start()
+	public void Initialize()
 	{
         LoadItemsOnUI();
 	}
@@ -37,7 +38,7 @@ public class InventoryUI : MonoBehaviour
 
 	void OnItemAdded(ItemSettings settings, ItemData item)
 	{
-		if (_uiItems.TryGetValue(settings.SaveID, out  InventoryItemUI uiItem))
+		if (settings.Cumulative && TryGetItemUI(settings.SaveID, out InventoryItemUI uiItem))
 		{
 			uiItem.UpdateUI(item);
 			return;
@@ -46,16 +47,16 @@ public class InventoryUI : MonoBehaviour
 		uiItem = Instantiate(_inventoryUIItemPrefab, _uiItemsParent);
 		uiItem.UpdateUI(item);
 
-		_uiItems.Add(settings.SaveID, uiItem);
+		_uiItems.Add(uiItem);
 	}
 
 	void OnItemRemoved(ItemSettings settings, ItemData item)
 	{
-		if (_uiItems.TryGetValue(settings.SaveID, out InventoryItemUI uiItem))
+		if (TryGetItemUI(settings.SaveID, out InventoryItemUI uiItem))
 		{
 			if (item.Amount <= 0)
 			{
-				_uiItems.Remove(settings.SaveID);
+				_uiItems.Remove(uiItem);
 				Destroy(uiItem.gameObject);
 				return;
 			}
@@ -67,19 +68,34 @@ public class InventoryUI : MonoBehaviour
 
 	void LoadItemsOnUI()
     {
-		foreach(InventoryItemUI uiItem in _uiItems.Values)
+		foreach(InventoryItemUI uiItem in _uiItems)
 		{
 			Destroy(uiItem.gameObject);
 		}
 
 		_uiItems.Clear();
 
-		foreach (ItemData item in InventoryService.GetItems().Values)
+		foreach (ItemData item in InventoryService.GetItems())
         {
             InventoryItemUI uiItem = Instantiate(_inventoryUIItemPrefab, _uiItemsParent);
             uiItem.UpdateUI(item);
 
-			_uiItems.Add(item.SaveID, uiItem);
+			_uiItems.Add(uiItem);
 		}
+    }
+
+	bool TryGetItemUI(string saveID, out InventoryItemUI itemUI)
+	{
+        foreach (InventoryItemUI inventoryItem in _uiItems)
+        {
+            if(inventoryItem.ItemData.SaveID == saveID)
+			{
+				itemUI = inventoryItem;
+				return true;
+			}
+        }
+
+		itemUI = null;
+		return false;
     }
 }

@@ -2,11 +2,10 @@ using UnityEditor;
 using UnityEngine;
 using System;
 using System.Reflection;
-using System.Collections.Generic;
 
+#if UNITY_EDITOR
 namespace HemetTools.Inspector
 {
-#if UNITY_EDITOR
 	[CustomEditor(typeof(MonoBehaviour), true)]
 	public class ButtonDrawer : Editor
 	{
@@ -38,6 +37,5 @@ namespace HemetTools.Inspector
 	{
 		// Pode adicionar parâmetros adicionais aqui, se necessário
 	}
-#endif
-
 }
+#endif

@@ -1,14 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class InventoryItemUI : MonoBehaviour
 {
-    [SerializeField] public ItemData _itemData;
+    [SerializeField] public ItemData ItemData;
 
     [SerializeField] TextMeshProUGUI _itemText;
+	[SerializeField] Image _itemIcon;
+
+	ItemSettings ItemSettings => InventoryReferences.GetItemSettings(ItemData.SaveID);
 
 	Animator _animator;
 
@@ -19,8 +20,9 @@ public class InventoryItemUI : MonoBehaviour
 
 	public void UpdateUI(ItemData itemData)
     {
-        _itemData = itemData;
+        ItemData = itemData;
 		_itemText.text = $"{itemData.Amount}x {itemData.SaveID}";
+		_itemIcon.sprite = ItemSettings.Icon;
 
 		PlayAnimation();
 	}

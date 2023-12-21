@@ -17,12 +17,12 @@ public class InventoryService
 	{
 		EnsureData();
 
-		if (!inventory.Items.ContainsKey(saveId)) return null;
+		inventory.TryGetItem(saveId, out ItemData item);
 
-		return inventory.Items[saveId];
+		return item;
 	}
 
-	public static Dictionary<string, ItemData> GetItems()
+	public static List<ItemData> GetItems()
 	{
 		EnsureData();
 
@@ -35,8 +35,11 @@ public class InventoryService
 
 		EnsureData();
 
-		ItemData item = inventory.AddItem(settings.SaveID, amount);
+		ItemData item = inventory.AddItem(settings.SaveID, settings.Cumulative, amount);
 		Save();
+
+		if (item == null)
+			return;
 
 		OnItemAdded?.Invoke(settings, item);
 		OnInventoryChanged?.Invoke();

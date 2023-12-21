@@ -8,6 +8,12 @@ public class GameEvents
 		public static Action Victory;
 	}
 
+    public class Item
+    {
+        public static Action<bool> OnOverlapDrop;
+        public static Action OnTryCatchItem;
+    }
+
 	public class Player
     {
         public static Action<Health> OnHealthChanged;

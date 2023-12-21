@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class PlayerItemCollector : ItemCollector
 {
 	[SerializeField] CollectingToolSettings _axeSettings;
+	[SerializeField] ItemCategorySettings _toolCategory;
 
 	PlayerController _controller;
 	Animator _animator;
@@ -30,6 +31,9 @@ public class PlayerItemCollector : ItemCollector
 	protected override void Update()
 	{
 		base.Update();
+
+		if (_controller.Hand.IsHolding(_toolCategory) == false)
+			return;
 
 		bool isCollectEnabled = IsCollectEnabled;
 		_animator.SetBool("Punching", isCollectEnabled);

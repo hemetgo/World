@@ -17,6 +17,9 @@ public class EnemyHealth : Health
 	public override void Die()
 	{
 		_controller.Animator.SetTrigger("Die");
+
+		_controller.Drop.ClaimRandomDrop();
+
 		EnemyService.UnregisterEnemy(_controller);
 		GetComponent<Collider>().enabled = false;
 	}

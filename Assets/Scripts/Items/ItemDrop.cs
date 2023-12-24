@@ -21,6 +21,14 @@ public class ItemDrop : MonoBehaviour
 		_mesh.transform.Rotate(0, _rotateSpeed * 10 * Time.deltaTime, 0);
 	}
 
+	public void Setup(ItemSettings item, int amount)
+	{
+		_item = item;
+		_amount = amount;
+
+		_mesh = Instantiate(_item.DropMeshPrefab, transform);
+	}
+
 	private void Catch()
 	{
 		InventoryService.AddItem(_item, _amount);

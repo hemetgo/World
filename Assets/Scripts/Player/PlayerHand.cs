@@ -76,6 +76,21 @@ public class PlayerHand : MonoBehaviour
 		}
 	}
 
+	public void SelectItem(ItemSettings itemSettings)
+	{
+		List<ItemData> list = InventoryService.GetItems();
+		for (int i = 0; i < list.Count; i++)
+		{
+			ItemData item = list[i];
+			if (item.SaveID.Equals(itemSettings.SaveID))
+			{
+				CurrentHandItemIndex = i;
+				UpdateHand();
+				return;
+			}
+		}
+	}
+
 	public void NextItem()
 	{
 		CurrentHandItemIndex++;

@@ -681,6 +681,7 @@ GameObject:
   - component: {fileID: 2082502566169042757}
   - component: {fileID: 3315635806319064768}
   - component: {fileID: 4625456454100594967}
+  - component: {fileID: -9178775797183551475}
   m_Layer: 0
   m_Name: SimpleZombie
   m_TagString: Untagged
@@ -719,6 +720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <TargetPoint>k__BackingField: {fileID: 8442693658896461442}
   Health: {fileID: 0}
+  Drop: {fileID: 0}
   Animator: {fileID: 0}
 --- !u!114 &4405865252067087402
 MonoBehaviour:
@@ -819,6 +821,28 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &-9178775797183551475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5126289456116498699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53ce14a699074f940b70158d31bb056f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dropChance: 0.424
+  _drops:
+  - Item: {fileID: 11400000, guid: 7674db2e9f0f8ca4995ac88c696e97f6, type: 2}
+    MinAmount: 1
+    MaxAmount: 1
+    Weight: 5
+  - Item: {fileID: 11400000, guid: abe4305519afeb64eb59e252d57fe03a, type: 2}
+    MinAmount: 1
+    MaxAmount: 1
+    Weight: 5
 --- !u!1 &5520050050725258323
 GameObject:
   m_ObjectHideFlags: 0

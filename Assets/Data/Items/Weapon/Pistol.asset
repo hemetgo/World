@@ -19,6 +19,8 @@ MonoBehaviour:
   <Category>k__BackingField: {fileID: 11400000, guid: a76bc799baae91044ae4655fe87dc19c,
     type: 2}
   <Cumulative>k__BackingField: 0
+  <DropMeshPrefab>k__BackingField: {fileID: 731138146125639211, guid: 74b94ad7cdc8aab40903847e8a779078,
+    type: 3}
   <Damage>k__BackingField: 15
   <ProjectileSpeed>k__BackingField: 12
   <Range>k__BackingField: 10

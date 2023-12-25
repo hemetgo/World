@@ -18,6 +18,12 @@ public class GameEvents
     {
         public static Action<Health> OnHealthChanged;
         public static Action OnTakeDamage;
+
+        public static Action<HandWeapon> OnFire;
+        public static Action<HandWeapon> OnChangeWeapon;
+
+        public static Action<HandWeapon> OnRechargingStart;
+        public static Action<HandWeapon> OnRechargingComplete;
     }
 
     public class Enemy

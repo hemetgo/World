@@ -833,16 +833,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ce14a699074f940b70158d31bb056f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dropChance: 0.424
-  _drops:
-  - Item: {fileID: 11400000, guid: 7674db2e9f0f8ca4995ac88c696e97f6, type: 2}
-    MinAmount: 1
-    MaxAmount: 1
-    Weight: 5
-  - Item: {fileID: 11400000, guid: abe4305519afeb64eb59e252d57fe03a, type: 2}
-    MinAmount: 1
-    MaxAmount: 1
-    Weight: 5
+  _dropChance: 0.1
+  _dropss: []
+  _dropSettings: {fileID: 11400000, guid: 65ccef3d50d64aa44b64c2e7e6a5b360, type: 2}
 --- !u!1 &5520050050725258323
 GameObject:
   m_ObjectHideFlags: 0

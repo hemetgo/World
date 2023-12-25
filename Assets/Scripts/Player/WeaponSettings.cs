@@ -6,6 +6,8 @@ using UnityEngine;
 public class WeaponSettings : ItemSettings
 {
 	[field: SerializeField] public int Damage { get; set; }
+	[field: SerializeField] public int MagazineCapacity { get; set; }
+	[field: SerializeField] public float RechargeTime { get; set; }
 	[field: SerializeField] public float ProjectileSpeed { get; set; }
 	[field: SerializeField] public float Range { get; set; }
 	[field: SerializeField, Range(.8f, 10)] public float FireRate { get; set; }

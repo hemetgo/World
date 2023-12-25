@@ -37,6 +37,11 @@ public class PlayerHand : MonoBehaviour
 		_initialItems.ForEach(item => InventoryService.AddItem(item, 1));
 	}
 
+	private void Start()
+	{
+		UpdateHand();
+	}
+
 	public bool IsHolding(ItemCategorySettings categorySettings)
 	{
 		if (CurrentHandItem == null) 
@@ -50,19 +55,6 @@ public class PlayerHand : MonoBehaviour
 		return false;
 	}
 
-	public HandWeapon GetWeapon(WeaponSettings settings)
-	{
-		foreach (HandItem item in _handItems)
-		{
-			if (item.ItemSettings == settings)
-			{
-				return item as HandWeapon;
-			}
-		}
-
-		return null;
-	}
-
 	public void DeactivateAllItems()
 	{
 		_handItems.ForEach(item => item.gameObject.SetActive(false));
@@ -72,7 +64,14 @@ public class PlayerHand : MonoBehaviour
 	{
 		foreach (HandItem item in _handItems)
 		{
-			item.gameObject.SetActive(item.ItemSettings == CurrentHandItem.ItemSettings);
+			if (item.ItemSettings == CurrentHandItem.ItemSettings)
+			{
+				item.gameObject.SetActive(true);
+				item.OnActivated();
+				return;
+			}
+			
+			item.gameObject.SetActive(false);
 		}
 	}
 

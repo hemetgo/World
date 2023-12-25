@@ -22,6 +22,8 @@ MonoBehaviour:
   <DropMeshPrefab>k__BackingField: {fileID: 731138146125639211, guid: 74b94ad7cdc8aab40903847e8a779078,
     type: 3}
   <Damage>k__BackingField: 15
+  <MagazineCapacity>k__BackingField: 12
+  <RechargeTime>k__BackingField: 1.25
   <ProjectileSpeed>k__BackingField: 12
   <Range>k__BackingField: 10
   <FireRate>k__BackingField: 1

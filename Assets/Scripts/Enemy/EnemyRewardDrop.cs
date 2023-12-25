@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class EnemyRewardDrop : MonoBehaviour
 {
-    [SerializeField, Range(0, 1)] float _dropChance;
-    [SerializeField] List<RewardDrop> _drops = new List<RewardDrop>();
+    [SerializeField] DropSettings _dropSettings;
 
     public void ClaimRandomDrop()
     {
-        if (_drops.Count > 0)
+        if (_dropSettings.Drops.Count > 0)
         {
-            if (Random.value < _dropChance)
+            if (Random.value < _dropSettings.DropChance)
             {
-                ItemDropManager.Instance.ClaimDrop(_drops, transform.position);
+                ItemDropManager.Instance.ClaimDrop(_dropSettings.Drops, transform.position);
             }
         }
     }

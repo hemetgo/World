@@ -26,7 +26,7 @@ public class PlayerCombat : MonoBehaviour
 		if (_controller.Hand.IsHolding(WeaponCategory) == false) 
 			return false;
 
-		if (_controller.IsMoving || !EnemyService.HaveEnemies) return false;
+		if (_controller.IsMoving || !EnemyService.HaveEnemies || !CurrentWeapon.HaveBullets) return false;
 
 		EnemyController targetEnemy = EnemyService.FindClosestEnemy(transform.position); 
 			

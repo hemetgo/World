@@ -22,6 +22,14 @@ public class InventoryService
 		return item;
 	}
 
+	public static bool TryGetItem(string saveId, out ItemData item)
+	{
+		inventory.TryGetItem(saveId, out ItemData resultItem);
+
+		item = resultItem;
+		return item != null;
+	}
+
 	public static List<ItemData> GetItems()
 	{
 		EnsureData();

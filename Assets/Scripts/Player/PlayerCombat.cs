@@ -4,7 +4,7 @@ public class PlayerCombat : MonoBehaviour
 {
 	[field: SerializeField] public ItemCategorySettings WeaponCategory { get; set; }
 
-	HandWeapon CurrentWeapon => _controller.Hand.CurrentHandItem as HandWeapon;
+	public HandWeapon CurrentWeapon => _controller.Hand.CurrentHandItem as HandWeapon;
 
 	PlayerController _controller;
 	Animator _animator;

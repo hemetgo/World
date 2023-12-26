@@ -23,6 +23,7 @@ public class GameEvents
         public static Action<HandWeapon> OnChangeWeapon;
 
         public static Action<HandWeapon> OnRechargingStart;
+        public static Action<HandWeapon> OnRechargingStop;
         public static Action<HandWeapon> OnRechargingComplete;
     }
 

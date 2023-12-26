@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 
 public class HandWeapon : HandItem
 {
 	[SerializeField] Transform _firePoint;
 
-	bool _isRecharging;
+	public bool IsRecharging { get; private set; }
+
 	float _rechargingTimer;
 
 	public float RechargingPercent => _rechargingTimer / WeaponSettings.RechargeTime;
@@ -21,23 +23,23 @@ public class HandWeapon : HandItem
 		InstaRecharge();
 	}
 
-	private void Update()
+	private void FixedUpdate()
 	{
-		if (_isRecharging)
-		{
-			_rechargingTimer += Time.deltaTime;
-			if ( _rechargingTimer >= WeaponSettings.RechargeTime)
-			{
-				_isRecharging = false;
-				CurrentBullets = WeaponSettings.MagazineCapacity;
-				GameEvents.Player.OnRechargingComplete?.Invoke(this);
-			}
-		}
+		RechargingControl();
 	}
 
 	public override void OnActivated()
 	{
 		GameEvents.Player.OnChangeWeapon?.Invoke(this);
+	}
+
+	public override void OnDeactivated()
+	{
+		if (IsRecharging)
+		{
+			IsRecharging = false;
+			GameEvents.Player.OnRechargingStop?.Invoke(this);
+		}
 	}
 
 	public void Fire(EnemyController enemy)
@@ -51,11 +53,6 @@ public class HandWeapon : HandItem
 		CurrentBullets--;
 
 		GameEvents.Player.OnFire?.Invoke(this);
-
-		if (CurrentBullets <= 0)
-		{
-			StartRecharge();
-		}
 	}
 
 	public void InstaRecharge()
@@ -64,9 +61,31 @@ public class HandWeapon : HandItem
 		GameEvents.Player.OnRechargingComplete?.Invoke(this);
 	}
 
+	void RechargingControl()
+	{
+		if (IsRecharging)
+		{
+			_rechargingTimer += Time.fixedDeltaTime;
+
+			if (_rechargingTimer >= WeaponSettings.RechargeTime)
+			{
+				IsRecharging = false;
+
+				int rechargedAmmo = WeaponSettings.DiscountAmmoFromInventory();
+				CurrentBullets = rechargedAmmo;
+
+				GameEvents.Player.OnRechargingComplete?.Invoke(this);
+			}
+		}
+		else if (CurrentBullets <= 0 && WeaponSettings.GetReserveAmmo() > 0)
+		{
+			StartRecharge();
+		}
+	}
+
 	public void StartRecharge()
 	{
-		_isRecharging = true;
+		IsRecharging = true;
 
 		_rechargingTimer = 0;
 

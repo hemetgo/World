@@ -1,9 +1,10 @@
 using UnityEngine;
 using TMPro;
 
-public class PlayerBulletsUI : MonoBehaviour
+public class AmmoUI : MonoBehaviour
 {
-	[SerializeField] TextMeshProUGUI _bulletsText;
+	[SerializeField] TextMeshProUGUI _currentAmmoText;
+	[SerializeField] TextMeshProUGUI _reserveAmmoText;
 
 	private void OnEnable()
 	{
@@ -21,6 +22,7 @@ public class PlayerBulletsUI : MonoBehaviour
 
 	void UpdateUI(HandWeapon weapon)
 	{
-		_bulletsText.text = $"{weapon.CurrentBullets}/{weapon.WeaponSettings.MagazineCapacity}"; 
+		_currentAmmoText.text = $"{weapon.CurrentBullets}/{weapon.WeaponSettings.MagazineCapacity}";
+		_reserveAmmoText.text = $"{weapon.WeaponSettings.GetReserveAmmo()}";
 	}
 }

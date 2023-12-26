@@ -8,4 +8,9 @@ public class HandItem : MonoBehaviour
 	{
 
 	}
+
+	public virtual void OnDeactivated()
+	{
+
+	}
 }

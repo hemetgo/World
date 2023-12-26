@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class RechargingBar : MonoBehaviour
 {
+	[SerializeField] TextMeshProUGUI _rechargingText;
 	[SerializeField] Slider _rechargingSlider;
+
+	[SerializeField] string _rechargingString;
+	[SerializeField] string _lowAmmoString;
 
 	HandWeapon _weapon;
 
@@ -19,12 +24,14 @@ public class RechargingBar : MonoBehaviour
 	private void OnEnable()
 	{
 		GameEvents.Player.OnRechargingStart += OnStart;
+		GameEvents.Player.OnRechargingStop += OnStop;
 		GameEvents.Player.OnRechargingComplete += OnComplete;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.Player.OnRechargingStart -= OnStart;
+		GameEvents.Player.OnRechargingStop -= OnStop;
 		GameEvents.Player.OnRechargingComplete -= OnComplete;
 	}
 
@@ -32,6 +39,12 @@ public class RechargingBar : MonoBehaviour
 	{
 		_weapon = weapon;
 		_rechargingSlider.gameObject.SetActive(true);
+	}
+
+	void OnStop(HandWeapon weapon)
+	{
+		_weapon = null;
+		_rechargingSlider.gameObject.SetActive(false);
 	}
 
 	void OnComplete(HandWeapon weapon)

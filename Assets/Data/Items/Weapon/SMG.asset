@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <SaveID>k__BackingField: smg
   <Name>k__BackingField: SMG
-  <Icon>k__BackingField: {fileID: 21300000, guid: 388aa7717c774d342bf37ade8abca280,
+  <Icon>k__BackingField: {fileID: 21300000, guid: e630f005bc9e3ff4a9faa1d6de322863,
     type: 3}
   <Category>k__BackingField: {fileID: 11400000, guid: a76bc799baae91044ae4655fe87dc19c,
     type: 2}
@@ -22,6 +22,8 @@ MonoBehaviour:
   <DropMeshPrefab>k__BackingField: {fileID: 6106120736936796224, guid: 54c1a200c5b189f49bd8cc5df845e4a2,
     type: 3}
   <Damage>k__BackingField: 10
+  <Ammo>k__BackingField: {fileID: 11400000, guid: 826a38f829b27ec45a4662c9e1bab497,
+    type: 2}
   <MagazineCapacity>k__BackingField: 36
   <RechargeTime>k__BackingField: 2
   <ProjectileSpeed>k__BackingField: 15

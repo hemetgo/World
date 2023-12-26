@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Net;
+using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
 
@@ -55,11 +56,6 @@ public class PlayerHand : MonoBehaviour
 		return false;
 	}
 
-	public void DeactivateAllItems()
-	{
-		_handItems.ForEach(item => item.gameObject.SetActive(false));
-	}
-
 	public void UpdateHand()
 	{
 		foreach (HandItem item in _handItems)
@@ -72,6 +68,7 @@ public class PlayerHand : MonoBehaviour
 			}
 			
 			item.gameObject.SetActive(false);
+			item.OnDeactivated();
 		}
 	}
 

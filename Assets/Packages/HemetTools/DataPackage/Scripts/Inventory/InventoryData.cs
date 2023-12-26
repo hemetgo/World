@@ -11,6 +11,8 @@ public class InventoryData
     public List<ItemData> Items = new List<ItemData>();
 	public int InventorySize;
 
+	public bool IsFull => Items.Count >= InventorySize;
+
 	public InventoryData()
 	{
 		Items = new List<ItemData>();

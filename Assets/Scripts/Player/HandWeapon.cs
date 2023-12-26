@@ -28,9 +28,15 @@ public class HandWeapon : HandItem
 		RechargingControl();
 	}
 
+	void OnUpdateAmmo()
+	{
+		GameEvents.Player.OnAmmoUpdate?.Invoke(this);
+	}
+
 	public override void OnActivated()
 	{
 		GameEvents.Player.OnChangeWeapon?.Invoke(this);
+		InventoryService.OnInventoryChanged += OnUpdateAmmo;
 	}
 
 	public override void OnDeactivated()
@@ -40,6 +46,8 @@ public class HandWeapon : HandItem
 			IsRecharging = false;
 			GameEvents.Player.OnRechargingStop?.Invoke(this);
 		}
+
+		InventoryService.OnInventoryChanged -= OnUpdateAmmo;
 	}
 
 	public void Fire(EnemyController enemy)
@@ -52,6 +60,7 @@ public class HandWeapon : HandItem
 
 		CurrentBullets--;
 
+		GameEvents.Player.OnAmmoUpdate?.Invoke(this);
 		GameEvents.Player.OnFire?.Invoke(this);
 	}
 

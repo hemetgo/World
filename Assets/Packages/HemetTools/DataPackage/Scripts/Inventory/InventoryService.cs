@@ -13,6 +13,8 @@ public class InventoryService
 	public static Action OnInventoryCleared;
 	public static Action OnInventoryChanged;
 
+	public static bool IsFull => inventory.IsFull;
+
 	public static ItemData GetItem(string saveId)
 	{
 		EnsureData();

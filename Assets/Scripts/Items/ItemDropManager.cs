@@ -23,7 +23,7 @@ public class ItemDropManager : MonoBehaviour
 	public void Drop(RewardDrop rewardDrop, Vector3 dropPosition)
 	{
 		ItemDrop drop = Instantiate(_dropPrefab, dropPosition, Quaternion.identity);
-		drop.Setup(rewardDrop.Item, Random.Range(rewardDrop.MinAmount, rewardDrop.MaxAmount));
+		drop.Setup(rewardDrop.Item, Random.Range(rewardDrop.MinAmount, rewardDrop.MaxAmount + 1));
 
 		drop.transform.Translate(Vector3.up);
 	}

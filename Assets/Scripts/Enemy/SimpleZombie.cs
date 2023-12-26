@@ -48,6 +48,9 @@ public class SimpleZombie : MovementBehaviour
 
 	private void Update()
 	{
+		if (_agent == false) 
+			return;
+
 		if (_controller.Health.IsDead)
 		{
 			_agent.isStopped = true;

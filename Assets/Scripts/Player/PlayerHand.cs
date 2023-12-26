@@ -67,7 +67,7 @@ public class PlayerHand : MonoBehaviour
 			{
 				item.gameObject.SetActive(true);
 				item.OnActivated();
-				return;
+				continue;
 			}
 			
 			item.gameObject.SetActive(false);

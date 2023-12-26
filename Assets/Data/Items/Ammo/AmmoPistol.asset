@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <SaveID>k__BackingField: ammoPistol
   <Name>k__BackingField: Pistol Ammo
-  <Icon>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: 
+  <Icon>k__BackingField: {fileID: 21300000, guid: f59834ab723a5d04d9d07db155a7dad3,
+    type: 3}
   <Category>k__BackingField: {fileID: 11400000, guid: dfa6e6c17e9517d4b9c4f3f770b85d01,
     type: 2}
   <Cumulative>k__BackingField: 1
-  <DropMeshPrefab>k__BackingField: {fileID: 0}
+  <DropMeshPrefab>k__BackingField: {fileID: 8252295576135901350, guid: 87ea32fd45fd96c4eae044e2eb57a5f5,
+    type: 3}

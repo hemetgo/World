@@ -21,7 +21,9 @@ public class GameEvents
 
         public static Action<HandWeapon> OnFire;
         public static Action<HandWeapon> OnChangeWeapon;
+        public static Action<HandWeapon> OnAmmoUpdate;
 
+        public static Action<HandWeapon> OnNoAmmo;
         public static Action<HandWeapon> OnRechargingStart;
         public static Action<HandWeapon> OnRechargingStop;
         public static Action<HandWeapon> OnRechargingComplete;

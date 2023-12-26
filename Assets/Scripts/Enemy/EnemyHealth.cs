@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyHealth : Health
 {
@@ -22,6 +23,7 @@ public class EnemyHealth : Health
 
 		EnemyService.UnregisterEnemy(_controller);
 		GetComponent<Collider>().enabled = false;
+		GetComponent<NavMeshAgent>().enabled = false;
 	}
 
 	public void DestroyEnemy()

@@ -4,8 +4,14 @@ public class PlayerCombat : MonoBehaviour
 {
 	[field: SerializeField] public ItemCategorySettings WeaponCategory { get; set; }
 
-	public HandWeapon CurrentWeapon => _controller.Hand.CurrentHandItem as HandWeapon;
-
+	public HandWeapon CurrentWeapon
+	{
+		get
+		{
+			if (_controller.Hand.IsHolding(WeaponCategory) == false) return null;
+			else return _controller.Hand.CurrentHandItem as HandWeapon;
+		}
+	}
 	PlayerController _controller;
 	Animator _animator;
 
@@ -23,7 +29,7 @@ public class PlayerCombat : MonoBehaviour
 
 	private bool AttackController()
 	{
-		if (_controller.Hand.IsHolding(WeaponCategory) == false) 
+		if (CurrentWeapon == null) 
 			return false;
 
 		if (_controller.IsMoving || !EnemyService.HaveEnemies || !CurrentWeapon.HaveBullets) return false;

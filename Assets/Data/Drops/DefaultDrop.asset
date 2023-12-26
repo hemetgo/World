@@ -12,13 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3116b03048bbb84d89ae7a03c2847f5, type: 3}
   m_Name: DefaultDrop
   m_EditorClassIdentifier: 
-  DropChance: 0.05
+  DropChance: 1
   Drops:
-  - Item: {fileID: 11400000, guid: 7674db2e9f0f8ca4995ac88c696e97f6, type: 2}
-    MinAmount: 0
-    MaxAmount: 0
-    Weight: 5
-  - Item: {fileID: 11400000, guid: abe4305519afeb64eb59e252d57fe03a, type: 2}
-    MinAmount: 0
-    MaxAmount: 0
+  - Item: {fileID: 11400000, guid: e78e1e45a249d34409231af216aa9c83, type: 2}
+    MinAmount: 12
+    MaxAmount: 12
     Weight: 5

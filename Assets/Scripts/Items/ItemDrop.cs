@@ -36,12 +36,34 @@ public class ItemDrop : MonoBehaviour
 		Destroy(gameObject);
 	}
 
+	private bool InstaCatchEnabled()
+	{
+		ItemData savedItem = InventoryService.GetItem(_item.SaveID);
+		if (savedItem == null && InventoryService.IsFull) 
+		{
+			return false;
+		}
+		else if (!_item.Cumulative)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.CompareTag("Player"))
 		{
-			GameEvents.Item.OnOverlapDrop(true);
-			GameEvents.Item.OnTryCatchItem += Catch;
+
+			if (!InstaCatchEnabled())
+			{
+				GameEvents.Item.OnOverlapDrop(true);
+				GameEvents.Item.OnTryCatchItem += Catch;
+				return;
+			}
+
+			Catch();
 		}
 	}
 

@@ -60,6 +60,9 @@ public class PlayerHand : MonoBehaviour
 	{
 		foreach (HandItem item in _handItems)
 		{
+			if (CurrentHandItem == null)
+				return;
+
 			if (item.ItemSettings == CurrentHandItem.ItemSettings)
 			{
 				item.gameObject.SetActive(true);

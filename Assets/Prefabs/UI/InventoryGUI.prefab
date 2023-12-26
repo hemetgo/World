@@ -49,6 +49,7 @@ MonoBehaviour:
   _uiItemsParent: {fileID: 735066883548944407}
   _inventoryUIItemPrefab: {fileID: 3846383495422976390, guid: e53147c12711d1b4ba8703eefc4c5863,
     type: 3}
+  _uiItems: []
 --- !u!114 &5641820048382574385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.6039216}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.2901961}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

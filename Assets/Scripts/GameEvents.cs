@@ -34,4 +34,9 @@ public class GameEvents
         public static Action OnAllEnemiesDie;
         public static Action<WavePhase> OnWaveChangePhase;
     }
+
+    public class UI
+    {
+        public static Action<ItemSettings, ItemData> OnOpenItemDetails;
+    }
 }

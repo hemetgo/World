@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3846383495422976390}
   - component: {fileID: 7065058767770263902}
   - component: {fileID: 5780941456055484878}
+  - component: {fileID: 1428698815143141023}
   m_Layer: 5
   m_Name: ItemUI
   m_TagString: Untagged
@@ -124,6 +125,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1428698815143141023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1498116980267347038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
 --- !u!1 &1922363243469003892
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.89411765}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -257,7 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.89411765}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -341,8 +355,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Pistol
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 89c67436854f77e43b6d372458192b26, type: 2}
-  m_sharedMaterial: {fileID: -359427917333447851, guid: 89c67436854f77e43b6d372458192b26,
+  m_fontAsset: {fileID: 11400000, guid: 22aab9e6e010c6a479ffaa0520da1668, type: 2}
+  m_sharedMaterial: {fileID: 3326667736269919618, guid: 22aab9e6e010c6a479ffaa0520da1668,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

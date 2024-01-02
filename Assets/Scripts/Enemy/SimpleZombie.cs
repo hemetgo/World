@@ -51,7 +51,7 @@ public class SimpleZombie : MovementBehaviour
 		if (_agent == false) 
 			return;
 
-		if (_controller.Health.IsDead)
+		if (_controller.Health.IsDead && _agent.isOnNavMesh)
 		{
 			_agent.isStopped = true;
 			return;
@@ -65,7 +65,8 @@ public class SimpleZombie : MovementBehaviour
 			return;
 		}
 
-		_agent.SetDestination(Player.transform.position);
+		if (_agent.isOnNavMesh) 
+			_agent.SetDestination(Player.transform.position);
 		transform.LookAt(new Vector3(Player.transform.position.x, transform.position.y, Player.transform.position.z));
 
 		_controller.Animator.SetFloat("Velocity", _agent.velocity.normalized.magnitude);
@@ -77,7 +78,8 @@ public class SimpleZombie : MovementBehaviour
 		if (Player.Health.IsDead) 
 			return;
 
-		_agent.isStopped = IsAttacking;
+		if (_agent.isOnNavMesh)
+			_agent.isStopped = IsAttacking;
 		
 		if (IsAttackEnabled)
 		{

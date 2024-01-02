@@ -9,6 +9,7 @@ public class InventoryItemUI : MonoBehaviour, IPointerUpHandler, IPointerDownHan
 
     [SerializeField] TextMeshProUGUI _itemText;
 	[SerializeField] Image _itemIcon;
+	[SerializeField] Image _background;
 
 	ItemSettings ItemSettings => InventoryReferences.GetItemSettings(ItemData.SaveID);
 	PlayerController Player => PlayerController.Instance;
@@ -40,7 +41,7 @@ public class InventoryItemUI : MonoBehaviour, IPointerUpHandler, IPointerDownHan
 	public void UpdateUI(ItemData itemData)
     {
         ItemData = itemData;
-		_itemText.text = $"{itemData.Amount}x {ItemSettings.Name}";
+		_itemText.text = itemData.Amount > 1 ? $"{itemData.Amount}" : "";
 		_itemIcon.sprite = ItemSettings.Icon;
 
 		PlayAnimation();
@@ -64,11 +65,14 @@ public class InventoryItemUI : MonoBehaviour, IPointerUpHandler, IPointerDownHan
 		{
 			SelectItem();
 		}
+
+		_background.color = Color.white;
 	}
 
 	public void OnPointerDown(PointerEventData eventData)
 	{
 		_isPressing = true;
 		_downTimer = 0;
+		_background.color = Color.green;
 	}
 }

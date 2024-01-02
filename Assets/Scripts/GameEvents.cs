@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 
 public class GameEvents
 {
@@ -27,6 +28,11 @@ public class GameEvents
         public static Action<HandWeapon> OnRechargingStart;
         public static Action<HandWeapon> OnRechargingStop;
         public static Action<HandWeapon> OnRechargingComplete;
+    }
+
+    public class Inputs
+    {
+        public static Action<Vector2> OnCrosshairUpdate;
     }
 
     public class Enemy

@@ -10,6 +10,7 @@ public class FollowTarget : MonoBehaviour
 	private void Awake()
 	{
 		_offset = transform.position - _target.position;
+		transform.SetParent(null);
 	}
 
 	private void Update()

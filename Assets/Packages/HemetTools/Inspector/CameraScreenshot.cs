@@ -1,10 +1,8 @@
 using HemetTools.Inspector;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 
+#if UNITY_EDITOR
 public class CameraScreenshot : MonoBehaviour
 {
 	[SerializeField] Camera captureCamera;
@@ -56,3 +54,4 @@ public class CameraScreenshot : MonoBehaviour
 	}
 }
 
+#endif

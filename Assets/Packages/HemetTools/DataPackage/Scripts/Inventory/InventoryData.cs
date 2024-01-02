@@ -8,35 +8,27 @@ using UnityEngine;
 [System.Serializable]
 public class InventoryData
 {
-    public List<ItemData> Items = new List<ItemData>();
-	public int InventorySize;
+    public Dictionary<string, List<ItemData>> Inventories = new Dictionary<string, List<ItemData>>();
 
-	public bool IsFull => Items.Count >= InventorySize;
+	//public bool IsFull => Items.Count >= InventorySize;
 
 	public InventoryData()
 	{
-		Items = new List<ItemData>();
-		InventorySize = 10;
+		Inventories = new Dictionary<string, List<ItemData>>();
 	}
 
-	public InventoryData(List<ItemData> items, int inventorySize)
+	public ItemData AddItem(string inventoryId, string itemID, bool cumulative, int amount)
 	{
-		Items = items;
-		InventorySize = inventorySize;
-	}
+		//if (Items.Count >= InventorySize)
+		//{
+		//	if (!cumulative)
+		//	{
+		//		Debug.LogError($"Inventory is full. Current inventory size is {InventorySize}");
+		//		return null;
+		//	}
+		//}
 
-	public ItemData AddItem(string itemID, bool cumulative, int amount)
-	{
-		if (Items.Count >= InventorySize)
-		{
-			if (!cumulative)
-			{
-				Debug.LogError($"Inventory is full. Current inventory size is {InventorySize}");
-				return null;
-			}
-		}
-
-		ItemData item = GetItem(itemID, cumulative);
+		ItemData item = GetItem(inventoryId, itemID, cumulative);
 		item.Add(amount);
 
 		Debug.Log($"{amount}x {itemID} has been added");
@@ -44,13 +36,13 @@ public class InventoryData
 		return item;
 	}
 
-	public ItemData RemoveItem(string itemID, int amount)
+	public ItemData RemoveItem(string inventoryId, string itemID, int amount)
 	{
-		ItemData item = GetItem(itemID);
+		ItemData item = GetItem(inventoryId, itemID);
 		item.Remove(amount);
-		if (GetItem(itemID).Amount <= 0)
+		if (GetItem(inventoryId, itemID).Amount <= 0)
 		{
-			Items.Remove(item);
+			Inventories[inventoryId].Remove(item);
 		}
 
 		Debug.Log($"{amount}x {itemID} has been removed");
@@ -60,7 +52,7 @@ public class InventoryData
 
 	public void Clear()
 	{
-		Items.Clear();
+		Inventories.Clear();
 
 		Debug.Log("Inventory has been cleared");
 	}
@@ -68,16 +60,16 @@ public class InventoryData
 	/// <summary>
 	/// Return an item with specified name, if it isn't exists, create one 
 	/// </summary>
-	private ItemData GetItem(string itemID)
+	private ItemData GetItem(string inventoryId, string itemID)
 	{
-		if (TryGetItem(itemID, out ItemData item) == true)
+		if (TryGetItem(inventoryId, itemID, out ItemData item) == true)
 		{
 			return item;
 		}
 
 		ItemData newItem = new ItemData(itemID, 0);
 
-		Items.Add(newItem);
+		Inventories[inventoryId].Add(newItem);
 
 		return newItem;
 	}
@@ -85,11 +77,11 @@ public class InventoryData
 	/// <summary>
 	/// Return an item with specified name, if it isn't exists, create one 
 	/// </summary>
-	private ItemData GetItem(string itemID, bool cumulative)
+	private ItemData GetItem(string inventoryId, string itemID, bool cumulative)
 	{
 		if (cumulative)
 		{
-			if (TryGetItem(itemID, out ItemData item) == true)
+			if (TryGetItem(inventoryId, itemID, out ItemData item) == true)
 			{
 				return item;
 			}
@@ -97,14 +89,14 @@ public class InventoryData
 
 		ItemData newItem = new ItemData(itemID, 0);
 
-		Items.Add(newItem);
+		Inventories[inventoryId].Add(newItem);
 
 		return newItem;
 	}
 
-	public bool TryGetItem(string itemID, out ItemData item)
+	public bool TryGetItem(string inventoryId, string itemID, out ItemData item)
 	{
-		foreach (ItemData filteredItem in Items)
+		foreach (ItemData filteredItem in Inventories[inventoryId])
 		{
 			if (filteredItem.SaveID == itemID)
 			{

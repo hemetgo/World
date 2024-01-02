@@ -4,48 +4,48 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEditor;
 
-public class InventoryService 
+public class InventoryService
 {
-    private static InventoryData inventoryData;
-	
+	private static InventoryData inventory;
+
 	public static Action<ItemSettings, ItemData> OnItemAdded;
 	public static Action<ItemSettings, ItemData> OnItemRemoved;
 	public static Action OnInventoryCleared;
 	public static Action OnInventoryChanged;
 
-	//public static bool IsFull => inventoryData.IsFull;
+	public static bool IsFull => inventory.IsFull;
 
-	public static ItemData GetItem(string inventoryId, string saveId)
+	public static ItemData GetItem(string saveId)
 	{
 		EnsureData();
 
-		inventoryData.TryGetItem(inventoryId, saveId, out ItemData item);
+		inventory.TryGetItem(saveId, out ItemData item);
 
 		return item;
 	}
 
-	public static bool TryGetItem(string inventoryId, string saveId, out ItemData item)
+	public static bool TryGetItem(string saveId, out ItemData item)
 	{
-		inventoryData.TryGetItem(inventoryId,saveId, out ItemData resultItem);
+		inventory.TryGetItem(saveId, out ItemData resultItem);
 
 		item = resultItem;
 		return item != null;
 	}
 
-	public static List<ItemData> GetItems(string inventoryId)
+	public static List<ItemData> GetItems()
 	{
 		EnsureData();
 
-		return inventoryData.Inventories[inventoryId];
+		return inventory.Items;
 	}
 
-	public static void AddItem(string inventoryId, ItemSettings settings, int amount)
+	public static void AddItem(ItemSettings settings, int amount)
 	{
 		if (amount < 1) Debug.LogWarning($"The sent amount value is {amount} and it cannot be less than 1");
 
 		EnsureData();
 
-		ItemData item = inventoryData.AddItem(inventoryId, settings.SaveID, settings.Cumulative, amount);
+		ItemData item = inventory.AddItem(settings.SaveID, settings.Cumulative, amount);
 		Save();
 
 		if (item == null)
@@ -55,13 +55,13 @@ public class InventoryService
 		OnInventoryChanged?.Invoke();
 	}
 
-	public static void RemoveItem(string inventoryId, ItemSettings settings, int amount) 
+	public static void RemoveItem(ItemSettings settings, int amount)
 	{
-		if (amount < 1) Debug.LogWarning($"The sent amount value is {amount} and it cannot be less than 1"); 
+		if (amount < 1) Debug.LogWarning($"The sent amount value is {amount} and it cannot be less than 1");
 
 		EnsureData();
 
-		ItemData item = inventoryData.RemoveItem(inventoryId, settings.SaveID, amount);
+		ItemData item = inventory.RemoveItem(settings.SaveID, amount);
 		Save();
 
 		OnItemRemoved?.Invoke(settings, item);
@@ -69,24 +69,13 @@ public class InventoryService
 	}
 
 #if UNITY_EDITOR
-	[MenuItem("HemetTools/Inventory/Clear All Inventories")]
+	[MenuItem("HemetTools/Inventory/Clear Inventory")]
 #endif
-	public static void ClearAllInventories()
+	public static void ClearInventory()
 	{
 		EnsureData();
 
-		inventoryData.Clear();
-		Save();
-
-		OnInventoryCleared?.Invoke();
-		OnInventoryChanged?.Invoke();
-	}
-
-	public static void ClearInventory(string inventoryId)
-	{
-		EnsureData();
-
-		inventoryData.Inventories[inventoryId].Clear();
+		inventory.Clear();
 		Save();
 
 		OnInventoryCleared?.Invoke();
@@ -95,14 +84,14 @@ public class InventoryService
 
 	private static void Save()
 	{
-		DataManager.Save(inventoryData);
+		DataManager.Save(inventory);
 	}
 
 	private static void EnsureData()
 	{
-		if (inventoryData == null)
+		if (inventory == null)
 		{
-			inventoryData = DataManager.Load<InventoryData>();
+			inventory = DataManager.Load<InventoryData>();
 		}
 	}
 }

@@ -5,7 +5,6 @@ using HemetTools.Inspector;
 #if UNITY_EDITOR
 public class InventoryDebugger : MonoBehaviour
 {
-	[SerializeField] 
 	[SerializeField] ItemSettings _item;
 	[SerializeField] int _amount;
 

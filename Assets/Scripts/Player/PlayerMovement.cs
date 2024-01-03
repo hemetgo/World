@@ -21,7 +21,9 @@ public class PlayerMovement : MovementBehaviour
 
 	private void Update()
 	{
-		_movementInput = Joystick.Input.Direction.normalized;
+		if (Joystick.Input) 
+			_movementInput = Joystick.Input.Direction.normalized;
+
 		if (_movementInput.magnitude == 0)
 			_movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
 

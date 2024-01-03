@@ -32,20 +32,14 @@ public class PlayerCombat : MonoBehaviour
 		if (CurrentWeapon == null) 
 			return false;
 
-		if (_controller.IsMoving || !EnemyService.HaveEnemies || !CurrentWeapon.HaveBullets) return false;
+		if (!CurrentWeapon.HaveBullets) return false;
 
-		EnemyController targetEnemy = EnemyService.FindClosestEnemy(transform.position); 
-			
-		if (targetEnemy)
-		{
-			float enemyDistance = Vector3.Distance(transform.position, targetEnemy.transform.position);
-			if (enemyDistance <= CurrentWeapon.WeaponSettings.Range)
-			{
-				_controller.LookAt(targetEnemy.transform.position);
-				_animator.speed = CurrentWeapon.WeaponSettings.FireRate;
-				return true;
-			}
-		}
+		if (Input.GetButton("Fire1"))
+        {
+			_controller.LookAt(_controller.MouseInput);
+			_animator.speed = CurrentWeapon.WeaponSettings.FireRate;
+			return true;
+        }
 
 		return false;
 	}

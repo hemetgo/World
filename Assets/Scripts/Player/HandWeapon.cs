@@ -53,7 +53,7 @@ public class HandWeapon : HandItem
 
 		Projectile projectile = Instantiate(WeaponSettings.ProjectilePrefab);
 		GameObject muzzleFlash = Instantiate(WeaponSettings.MuzzleFlashPrefab, _firePoint.position, transform.rotation);
-		projectile.Setup(_firePoint.position, enemy.TargetPoint.position, WeaponSettings.Damage, WeaponSettings.ProjectileSpeed);
+		projectile.Setup(_firePoint.position, PlayerController.Instance.MouseInput, WeaponSettings.Damage, WeaponSettings.ProjectileSpeed);
 
 		CurrentBullets--;
 

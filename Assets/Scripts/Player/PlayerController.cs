@@ -41,4 +41,30 @@ public class PlayerController : MonoBehaviour
 	{
 		transform.LookAt(new Vector3(target.x, transform.position.y, target.z));
 	}
+
+	public Vector3 MouseInput
+    {
+        get
+        {
+			// Crie um raio a partir da posição do mouse na tela
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+			// Crie um plano no qual você deseja projetar o ponto do mouse
+			Plane plane = new Plane(Vector3.up, Vector3.zero);
+
+			float hitDistance;
+
+			// Intersecte o raio com o plano
+			if (plane.Raycast(ray, out hitDistance))
+			{
+				// Obtenha a posição do ponto de interseção no espaço do mundo
+				Vector3 worldMousePosition = ray.GetPoint(hitDistance);
+				worldMousePosition.y = transform.position.y + 1;
+				return worldMousePosition;
+			}
+
+			// Se o botão do mouse não estiver sendo pressionado, retorne Vector3.zero
+			return Vector3.zero;
+		}
+    }
 }

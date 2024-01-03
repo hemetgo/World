@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: -5283729759109255829}
   - component: {fileID: 9150763459342639418}
   - component: {fileID: -7738783753991373782}
+  - component: {fileID: 7623667636312920920}
   m_Layer: 0
   m_Name: WeaponProjectile
   m_TagString: Untagged
@@ -281,6 +282,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lifeTime: 5
+--- !u!114 &7623667636312920920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5933136715644596770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings: {fileID: 11400000, guid: 98899d6cc81e4254685570b511c55ed8, type: 2}
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &6185089521170337542
 GameObject:
   m_ObjectHideFlags: 0

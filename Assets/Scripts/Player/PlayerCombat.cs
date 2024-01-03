@@ -40,8 +40,15 @@ public class PlayerCombat : MonoBehaviour
 
 	void SetFiring(bool firing)
 	{
+		if (CurrentWeapon == null || !CurrentWeapon.HaveBullets)
+		{
+			_isFiring = false;
+			_animator.SetBool("Firing", false);
+			return;
+		}
+
 		_isFiring = firing;
-		_animator.SetBool("Firing", firing);
+		_animator.SetBool("Firing", _isFiring);
 	}
 
 	private void AttackController()

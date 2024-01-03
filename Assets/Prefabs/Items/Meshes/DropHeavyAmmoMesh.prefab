@@ -142,7 +142,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: AmoBox_02
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6185878897092574165, guid: 6a8a57a769968a644801096c6172bee8, type: 3}
+    - {fileID: 7440614731054973668, guid: 6a8a57a769968a644801096c6172bee8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

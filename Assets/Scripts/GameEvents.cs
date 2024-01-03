@@ -32,7 +32,10 @@ public class GameEvents
 
     public class Inputs
     {
-        public static Action<Vector2> OnCrosshairUpdate;
+        public static Action<bool> OnReload;
+        public static Action<bool> OnFire;
+        public static Action OnScrollUp;
+        public static Action OnScrollDown;
     }
 
     public class Enemy

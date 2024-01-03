@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class PlayerMovement : MovementBehaviour
 {
 	Vector2 _movementInput;
-	Animator _animator;
+	PlayerController _controller;
 
 	public Vector2 Velocity => _agent.velocity;
 
@@ -14,19 +15,18 @@ public class PlayerMovement : MovementBehaviour
 	{
 		base.Awake();
 
-		_animator = GetComponent<Animator>();
+		_controller = GetComponent<PlayerController>();
 
 		_agent.updateRotation = false;
 	}
 
 	private void Update()
 	{
-		if (Joystick.Input) 
-			_movementInput = Joystick.Input.Direction.normalized;
+		_movementInput = InputHelper.MovementInput;
+		//if (Joystick.Input) 
+		//	_movementInput = Joystick.Input.Direction.normalized;
 
-		if (_movementInput.magnitude == 0)
-			_movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
-
+		if (_controller.IsShooting) _movementInput = Vector2.zero;
 		MoveTo(_movementInput);
 
 		AnimationControl();
@@ -34,7 +34,8 @@ public class PlayerMovement : MovementBehaviour
 
 	void AnimationControl()
 	{
-		transform.LookAt(transform.position + new Vector3(_movementInput.x, 0, _movementInput.y)); 
-		_animator.SetFloat("Movement", _agent.velocity.normalized.magnitude);
+		if (!_controller.IsShooting)
+			transform.LookAt(transform.position + new Vector3(_movementInput.x, 0, _movementInput.y)); 
+		_controller.Animator.SetFloat("Movement", _agent.velocity.normalized.magnitude);
 	}
 }

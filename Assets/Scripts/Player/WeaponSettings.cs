@@ -23,13 +23,13 @@ public class WeaponSettings : ItemSettings
 		return item.Amount;
 	}
 
-	public int DiscountAmmoFromInventory()
+	public int DiscountAmmoFromInventory(int currentBullets)
 	{
 		if (InventoryService.TryGetItem(Ammo.SaveID, out ItemData item) == false) 
 			return 0;
 
 		int ammoToDiscount = item.Amount;
-		if (item.Amount >= MagazineCapacity) ammoToDiscount = MagazineCapacity;
+		if (item.Amount >= MagazineCapacity) ammoToDiscount = MagazineCapacity - currentBullets;
 
 		InventoryService.RemoveItem(Ammo, ammoToDiscount);
 		return ammoToDiscount;

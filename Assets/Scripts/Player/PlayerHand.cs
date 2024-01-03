@@ -32,6 +32,18 @@ public class PlayerHand : MonoBehaviour
 		}
 	}
 
+	private void OnEnable()
+	{
+		GameEvents.Inputs.OnScrollUp += NextItem;
+		GameEvents.Inputs.OnScrollDown += PreviousItem;
+	}
+
+	private void OnDisable()
+	{
+		GameEvents.Inputs.OnScrollUp -= NextItem;
+		GameEvents.Inputs.OnScrollDown -= PreviousItem;
+	}
+
 	private void Awake()
 	{
 		InventoryService.ClearInventory();
@@ -66,12 +78,12 @@ public class PlayerHand : MonoBehaviour
 			if (item.ItemSettings == CurrentHandItem.ItemSettings)
 			{
 				item.gameObject.SetActive(true);
-				item.OnActivated();
+				item.OnEquip();
 				continue;
 			}
 			
 			item.gameObject.SetActive(false);
-			item.OnDeactivated();
+			item.OnUnequip();
 		}
 	}
 
@@ -99,5 +111,25 @@ public class PlayerHand : MonoBehaviour
 		}
 
 		UpdateHand();
+	}
+
+	public void PreviousItem()
+	{
+		CurrentHandItemIndex--;
+		if (CurrentHandItemIndex < 0)
+		{
+			CurrentHandItemIndex = InventoryService.GetItems().Count - 1;
+		}
+
+		UpdateHand();
+	}
+
+	
+	/// <summary>
+	/// Is called on shooting animation
+	/// </summary>
+	public void UseHandItem()
+	{
+		CurrentHandItem.OnUse();
 	}
 }

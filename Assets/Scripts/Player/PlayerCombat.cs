@@ -4,6 +4,8 @@ public class PlayerCombat : MonoBehaviour
 {
 	[field: SerializeField] public ItemCategorySettings WeaponCategory { get; set; }
 
+	private bool _isFiring;
+
 	public HandWeapon CurrentWeapon
 	{
 		get
@@ -15,6 +17,16 @@ public class PlayerCombat : MonoBehaviour
 	PlayerController _controller;
 	Animator _animator;
 
+	private void OnEnable()
+	{
+		GameEvents.Inputs.OnFire += SetFiring;
+	}
+
+	private void OnDisable()
+	{
+		GameEvents.Inputs.OnFire -= SetFiring;
+	}
+
 	private void Start()
 	{
 		_controller = GetComponent<PlayerController>();
@@ -23,33 +35,28 @@ public class PlayerCombat : MonoBehaviour
 
 	private void Update()
 	{
-		bool isAttacking = AttackController();
-		_animator.SetBool("Shooting", isAttacking);
+		AttackController();
 	}
 
-	private bool AttackController()
+	void SetFiring(bool firing)
 	{
-		if (CurrentWeapon == null) 
-			return false;
+		_isFiring = firing;
+		_animator.SetBool("Firing", firing);
+	}
 
-		if (!CurrentWeapon.HaveBullets) return false;
+	private void AttackController()
+	{
+		if (CurrentWeapon == null || !CurrentWeapon.HaveBullets)
+		{
+			SetFiring(false);
+			return;
+		}
 
-		if (Input.GetButton("Fire1"))
-        {
-			_controller.LookAt(_controller.MouseInput);
+		if (_isFiring)
+		{
+			_controller.LookAt(InputHelper.GetRelativeMouseWorldPosition(transform));
 			_animator.speed = CurrentWeapon.WeaponSettings.FireRate;
-			return true;
-        }
-
-		return false;
+		}
 	}
 
-	/// <summary>
-	/// Is called on shooting animation
-	/// </summary>
-	public void Fire()
-	{
-		EnemyController targetEnemy = EnemyService.FindClosestEnemy(transform.position);
-		CurrentWeapon.Fire(targetEnemy);
-	}
 }

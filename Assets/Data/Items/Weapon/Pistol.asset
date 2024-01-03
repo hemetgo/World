@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <SaveID>k__BackingField: pistol
   <Name>k__BackingField: Pistol
+  <Description>k__BackingField: 
   <Icon>k__BackingField: {fileID: 21300000, guid: 8761a8529594d1b40981803d32e6181b,
     type: 3}
   <Category>k__BackingField: {fileID: 11400000, guid: a76bc799baae91044ae4655fe87dc19c,
@@ -28,7 +29,7 @@ MonoBehaviour:
   <RechargeTime>k__BackingField: 1.25
   <ProjectileSpeed>k__BackingField: 12
   <Range>k__BackingField: 10
-  <FireRate>k__BackingField: 1
+  <FireRate>k__BackingField: 1.5
   <ProjectilePrefab>k__BackingField: {fileID: -4458612608805561231, guid: 3adcf1d2791fe7c4ebbf013bf72b7eda,
     type: 3}
   <MuzzleFlashPrefab>k__BackingField: {fileID: 3266849130705777164, guid: 081436239cb74f74d80f2ad966c84184,

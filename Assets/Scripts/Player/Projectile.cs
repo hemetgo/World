@@ -1,35 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] int _damage;
+    [SerializeField] FireWeaponSettings _fireWeaponSettings;
     [SerializeField] GameObject _hitVFX;
 
-    public void Setup(Vector3 spawnPoint, Vector3 targetPosition, int damage, float moveSpeed)
+    public void Setup(Vector3 spawnPoint, Vector3 targetPosition, FireWeaponSettings weaponSettings)
     {
         Rigidbody rigidbody = GetComponent<Rigidbody>();
 
         transform.position = spawnPoint;
         transform.LookAt(targetPosition);
-        rigidbody.velocity = transform.forward * moveSpeed;
+        rigidbody.velocity = transform.forward * weaponSettings.ProjectileSpeed;
 
-        _damage = damage;
+		_fireWeaponSettings = weaponSettings;
+    }
+
+	private void OnHit()
+    {
+		Destroy(gameObject);
     }
 
     private void OnHit(GameObject vfx)
     {
-        Instantiate(vfx, transform.position, Quaternion.identity);
-        Destroy(gameObject);
-    }
+		Instantiate(vfx, transform.position, Quaternion.identity);
+		Destroy(gameObject);
+	}
+
 
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.TryGetComponent(out EnemyController enemy))
         {
-            enemy.Health.TakeDamage(_damage);
-            OnHit(enemy.Health.BloodVFX);
+            enemy.Health.TakeDamage(_fireWeaponSettings.ResultDamage);
+            OnHit();
 		}
         else if (other.CompareTag("Ground") || other.CompareTag("Wall"))
         {

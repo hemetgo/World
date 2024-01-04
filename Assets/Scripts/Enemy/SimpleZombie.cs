@@ -66,9 +66,11 @@ public class SimpleZombie : MovementBehaviour
 			return;
 		}
 
-		if (_agent.isOnNavMesh) 
+		if (_agent.isOnNavMesh)
+		{
 			_agent.SetDestination(Player.transform.position);
-		transform.LookAt(new Vector3(Player.transform.position.x, transform.position.y, Player.transform.position.z));
+			transform.LookAt(new Vector3(Player.transform.position.x, transform.position.y, Player.transform.position.z));
+		}
 
 		_controller.Animator.SetFloat("Velocity", _agent.velocity.normalized.magnitude);
 		AttackController();
@@ -104,7 +106,7 @@ public class SimpleZombie : MovementBehaviour
 
 		if (Vector3.Distance(transform.position, Player.transform.position) <= _attackRange * 1.25f)
 		{
-			Player.Health.TakeDamage(_attackDamage);
+			Player.Health.TakeDamage(new ResultDamage(false, _attackDamage));
 		}
 	}
 }

@@ -8,19 +8,27 @@ public class AmmoUI : MonoBehaviour
 	private void OnEnable()
 	{
 		GameEvents.Player.OnRechargingComplete += UpdateUI;
-		GameEvents.Player.OnChangeWeapon += UpdateUI;
+		GameEvents.Player.OnEquipItem += UpdateUI;
 		GameEvents.Player.OnAmmoUpdate += UpdateUI;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.Player.OnRechargingComplete -= UpdateUI;
-		GameEvents.Player.OnChangeWeapon -= UpdateUI;
+		GameEvents.Player.OnEquipItem -= UpdateUI;
 		GameEvents.Player.OnAmmoUpdate -= UpdateUI;
 	}
 
-	void UpdateUI(HandWeapon weapon)
+	void UpdateUI(HandItem item)
 	{
-		_ammoText.text = $"{weapon.CurrentBullets}/{weapon.WeaponSettings.GetReserveAmmo()}";
+		if (item.IsTypeOf(typeof(HandFireWeapon)))
+		{
+			HandFireWeapon weapon = (HandFireWeapon)item;
+			_ammoText.text = $"{weapon.CurrentBullets}/{weapon.FireWeaponSettings.GetReserveAmmo()}";
+		}
+		else
+		{
+			_ammoText.text = "";
+		}
 	}
 }

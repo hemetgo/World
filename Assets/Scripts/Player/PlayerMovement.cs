@@ -34,8 +34,8 @@ public class PlayerMovement : MovementBehaviour
 
 	void AnimationControl()
 	{
-		if (!_controller.IsShooting)
-			transform.LookAt(transform.position + new Vector3(_movementInput.x, 0, _movementInput.y)); 
+		//if (!_controller.IsShooting)
+		//	transform.LookAt(transform.position + new Vector3(_movementInput.x, 0, _movementInput.y)); 
 		_controller.Animator.SetFloat("Movement", _agent.velocity.normalized.magnitude);
 	}
 }

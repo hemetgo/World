@@ -1,3 +1,4 @@
+using HemetTools.Inspector;
 using System.Collections.Generic;
 using System.Net;
 using TMPro;
@@ -7,8 +8,9 @@ using UnityEngine;
 public class PlayerHand : MonoBehaviour
 {
 	[SerializeField] List<ItemSettings> _initialItems = new List<ItemSettings>();
+	[SerializeField] Transform _itemsContainer;
 	
-	[SerializeField] List<HandItem> _handItems = new List<HandItem>();
+	List<HandItem> _handItems = new List<HandItem>();
 
 	List<ItemData> InventoryItems => InventoryService.GetItems();
 
@@ -48,6 +50,7 @@ public class PlayerHand : MonoBehaviour
 	{
 		InventoryService.ClearInventory();
 		_initialItems.ForEach(item => InventoryService.AddItem(item, 1));
+		_handItems = new List<HandItem>(_itemsContainer.GetComponentsInChildren<HandItem>(true));
 	}
 
 	private void Start()
@@ -63,6 +66,19 @@ public class PlayerHand : MonoBehaviour
 		if (CurrentHandItem.ItemSettings.Category == categorySettings)
 		{
 			return true;
+		}
+
+		return false;
+	}
+
+	public bool IsHolding(List<ItemCategorySettings> categoriesSettings)
+	{
+		foreach(ItemCategorySettings categorySettings in categoriesSettings)
+		{
+			if (IsHolding(categorySettings))
+			{
+				return true;
+			}
 		}
 
 		return false;

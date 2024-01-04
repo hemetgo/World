@@ -9,7 +9,7 @@ public class WeaponGUI : MonoBehaviour
 	[SerializeField] TextMeshProUGUI _feedbackText;
 	[SerializeField] Slider _rechargingSlider;
 
-	HandWeapon _weapon;
+	HandFireWeapon _weapon;
 
 	private void Update()
 	{
@@ -21,7 +21,7 @@ public class WeaponGUI : MonoBehaviour
 	private void OnEnable()
 	{
 		GameEvents.Player.OnRechargingStart += OnRechargingStart;
-		GameEvents.Player.OnChangeWeapon += OnRechargingStop;
+		GameEvents.Player.OnEquipItem += OnRechargingStop;
 		GameEvents.Player.OnRechargingStop += OnRechargingStop;
 		GameEvents.Player.OnRechargingComplete += OnRechargingComplete;
 	}
@@ -29,26 +29,26 @@ public class WeaponGUI : MonoBehaviour
 	private void OnDisable()
 	{
 		GameEvents.Player.OnRechargingStart -= OnRechargingStart;
-		GameEvents.Player.OnChangeWeapon -= OnRechargingStop;
+		GameEvents.Player.OnEquipItem -= OnRechargingStop;
 		GameEvents.Player.OnRechargingStop -= OnRechargingStop;
 		GameEvents.Player.OnRechargingComplete -= OnRechargingComplete;
 	}
 
-	void OnRechargingStart(HandWeapon weapon)
+	void OnRechargingStart(HandFireWeapon weapon)
 	{
 		_weapon = weapon;
 		_feedbackText.gameObject.SetActive(true);
 		_rechargingSlider.gameObject.SetActive(true);
 	}
 
-	void OnRechargingStop(HandWeapon weapon)
+	void OnRechargingStop(HandItem item)
 	{
 		_weapon = null;
 		_feedbackText.gameObject.SetActive(false);
 		_rechargingSlider.gameObject.SetActive(false);
 	}
 
-	void OnRechargingComplete(HandWeapon weapon)
+	void OnRechargingComplete(HandFireWeapon weapon)
 	{
 		_weapon = null;
 		_feedbackText.gameObject.SetActive(false);

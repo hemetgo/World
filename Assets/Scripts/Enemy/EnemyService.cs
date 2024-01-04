@@ -44,4 +44,19 @@ public class EnemyService
 		return closestEnemy;
 	}
 
+	public static List<EnemyController> FindEnemiesOnRange(Vector3 position, float range)
+	{
+		List<EnemyController> result = new List<EnemyController>();
+
+		foreach(EnemyController enemy in Enemies)
+		{
+			if (Vector3.Distance(enemy.transform.position, position) < range)
+			{
+				result.Add(enemy);
+			}
+		}
+
+		return result;
+	}
+
 }

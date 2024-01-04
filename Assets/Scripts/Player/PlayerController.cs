@@ -13,9 +13,8 @@ public class PlayerController : MonoBehaviour
 	public static PlayerController Instance;
 
     public bool IsMoving => Movement.Velocity.magnitude != 0;
-	public bool IsCollecting => Animator.GetBool("Punching");
-	public bool IsShooting => Animator.GetBool("Firing");
-	public bool IsReloading => Combat.CurrentWeapon.IsReloading;
+	public bool IsCollecting => Animator.GetBool("Collecting");
+	public bool IsShooting => Animator.GetBool("Firing") || Animator.GetBool("Punching");
 
 	private void Awake()
 	{
@@ -36,6 +35,8 @@ public class PlayerController : MonoBehaviour
 		{
 			Animator.speed = 1;
 		}
+
+		LookAt(InputHelper.GetRelativeMouseWorldPosition(transform));
 	}
 
 	public void LookAt(Vector3 target)

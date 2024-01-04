@@ -20,7 +20,7 @@ public class PlayerHealth : Health
 		GameEvents.Player.OnHealthChanged?.Invoke(this);
 	}
 
-	public override void TakeDamage(int damage)
+	public override void TakeDamage(ResultDamage damage)
 	{
 		base.TakeDamage(damage);
 

@@ -25,15 +25,15 @@ public class InputHelper : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetButtonDown("Fire1"))
-			GameEvents.Inputs.OnFire?.Invoke(true);
+		if (Input.GetButton("Fire1"))
+			GameEvents.Inputs.OnFire?.Invoke(InputState.Holding);
 		if (Input.GetButtonUp("Fire1"))
-			GameEvents.Inputs.OnFire?.Invoke(false);
+			GameEvents.Inputs.OnFire?.Invoke(InputState.Up);
 
 		if (Input.GetButtonDown("Reload"))
-			GameEvents.Inputs.OnReload?.Invoke(true);
+			GameEvents.Inputs.OnReload?.Invoke(InputState.Down);
 		if (Input.GetButtonUp("Reload"))
-			GameEvents.Inputs.OnReload?.Invoke(false);
+			GameEvents.Inputs.OnReload?.Invoke(InputState.Up);
 
 		if (Input.mouseScrollDelta.y > 0)
 			GameEvents.Inputs.OnScrollUp?.Invoke();
@@ -47,4 +47,9 @@ public class InputHelper : MonoBehaviour
         result.y = transform.position.y;
         return result;
     }
+}
+
+public enum InputState
+{
+	Down, Holding, Up
 }

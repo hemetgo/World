@@ -286,7 +286,7 @@ Transform:
   m_GameObject: {fileID: 2417954803440313652}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.678, z: 0}
+  m_LocalPosition: {x: 0, y: 0.678, z: 0.233}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -737,6 +737,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MaxHealth>k__BackingField: 100
   <CurrentHealth>k__BackingField: 0
+  _damageFeedbackPrefab: {fileID: 2390885377177850366, guid: 406c2be4b4e404f4da46178e8cd1fb61,
+    type: 3}
   BloodVFX: {fileID: 4553287630450876385, guid: c42d67ef214ddf54783c7058c9aeebe6,
     type: 3}
 --- !u!114 &3155945470107081203

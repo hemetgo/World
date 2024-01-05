@@ -20,7 +20,7 @@ public class PlayerMovement : MovementBehaviour
 		_agent.updateRotation = false;
 	}
 
-	private void Update()
+	public void Evaluate()
 	{
 		_movementInput = InputHelper.MovementInput;
 		//if (Joystick.Input) 

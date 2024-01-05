@@ -5,6 +5,8 @@ public class GameEvents
 {
     public class Game
     {
+        public static Action<bool> Pause;
+
 		public static Action GameOver;
 		public static Action Victory;
 	}
@@ -35,6 +37,7 @@ public class GameEvents
     {
         public static Action<InputState> OnReload;
         public static Action<InputState> OnFire;
+        public static Action<InputState> OnPause;
         public static Action OnScrollUp;
         public static Action OnScrollDown;
     }

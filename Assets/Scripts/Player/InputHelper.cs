@@ -23,22 +23,46 @@ public class InputHelper : MonoBehaviour
 		}
     }
 
+	private void OnEnable()
+	{
+		GameEvents.Game.Pause += OnPause;
+	}
+
+	private void OnDisable()
+	{
+		GameEvents.Game.Pause -= OnPause;
+	}
+
 	private void Update()
 	{
-		if (Input.GetButton("Fire1"))
-			GameEvents.Inputs.OnFire?.Invoke(InputState.Holding);
-		if (Input.GetButtonUp("Fire1"))
-			GameEvents.Inputs.OnFire?.Invoke(InputState.Up);
+		if (Input.GetButtonDown("Pause"))
+			GameEvents.Inputs.OnPause?.Invoke(InputState.Down);
+		if (Input.GetButtonUp("Pause"))
+			GameEvents.Inputs.OnPause?.Invoke(InputState.Up);
 
-		if (Input.GetButtonDown("Reload"))
-			GameEvents.Inputs.OnReload?.Invoke(InputState.Down);
-		if (Input.GetButtonUp("Reload"))
-			GameEvents.Inputs.OnReload?.Invoke(InputState.Up);
+		if (!PauseManager.IsPaused)
+		{
+			if (Input.GetButton("Fire1"))
+				GameEvents.Inputs.OnFire?.Invoke(InputState.Holding);
+			if (Input.GetButtonUp("Fire1"))
+				GameEvents.Inputs.OnFire?.Invoke(InputState.Up);
 
-		if (Input.mouseScrollDelta.y > 0)
-			GameEvents.Inputs.OnScrollUp?.Invoke();
-		if (Input.mouseScrollDelta.y < 0)
-			GameEvents.Inputs.OnScrollDown?.Invoke();
+			if (Input.GetButtonDown("Reload"))
+				GameEvents.Inputs.OnReload?.Invoke(InputState.Down);
+			if (Input.GetButtonUp("Reload"))
+				GameEvents.Inputs.OnReload?.Invoke(InputState.Up);
+
+			if (Input.mouseScrollDelta.y > 0)
+				GameEvents.Inputs.OnScrollUp?.Invoke();
+			if (Input.mouseScrollDelta.y < 0)
+				GameEvents.Inputs.OnScrollDown?.Invoke();
+		}
+	}
+
+	public static void OnPause(bool pause)
+	{
+		GameEvents.Inputs.OnFire?.Invoke(InputState.Up);
+		GameEvents.Inputs.OnReload?.Invoke(InputState.Up);
 	}
 
 	public static Vector3 GetRelativeMouseWorldPosition(Transform transform)

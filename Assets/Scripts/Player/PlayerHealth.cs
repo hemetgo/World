@@ -19,6 +19,8 @@ public class PlayerHealth : Health
 	{
 		GameEvents.Player.OnHealthChanged?.Invoke(this);
 	}
+	
+	public void Evaluate() { }
 
 	public override void TakeDamage(ResultDamage damage)
 	{

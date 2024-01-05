@@ -26,7 +26,7 @@ public class ItemCollector : MonoBehaviour
 	{
 	}
 
-	protected virtual void Update()
+	public virtual void Evaluate()
 	{
 	}
 

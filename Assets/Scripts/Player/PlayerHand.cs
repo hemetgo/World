@@ -49,17 +49,26 @@ public class PlayerHand : MonoBehaviour
 		InventoryService.OnInventoryChanged -= ItemIndex;
 	}
 
+	private void OnDestroy()
+	{
+		OnDisable();
+	}
+
 	private void Awake()
 	{
 		InventoryService.ClearInventory();
 		_initialItems.ForEach(item => InventoryService.AddItem(item, 1));
 		_handItems = new List<HandItem>(_itemsContainer.GetComponentsInChildren<HandItem>(true));
+
+		CurrentHandItemIndex = 0;
 	}
 
 	private void Start()
 	{
 		UpdateHand();
 	}
+
+	public void Evaluate() { }
 
 	void ItemIndex()
 	{
@@ -116,8 +125,11 @@ public class PlayerHand : MonoBehaviour
 			item.OnUnequip();
 		}
 
-		currentItem.gameObject.SetActive(true);
-		currentItem.OnEquip();
+		if (currentItem)
+		{
+			currentItem.gameObject.SetActive(true);
+			currentItem.OnEquip();
+		}
 	}
 
 	public void SelectItem(ItemSettings itemSettings)

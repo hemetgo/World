@@ -36,11 +36,15 @@ public class PlayerController : MonoBehaviour
 			Animator.speed = 1;
 		}
 
-		if (!Health.IsDead)
+		if (!Health.IsDead && !PauseManager.IsPaused)
 		{
+			Movement.Evaluate();
+			ItemCollector.Evaluate();
+			Hand.Evaluate();
+			Combat.Evaluate();
+			Health.Evaluate();
 			LookToCursor();
 		}
-		
 	}
 
 	public void LookToCursor()

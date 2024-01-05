@@ -28,9 +28,9 @@ public class PlayerItemCollector : ItemCollector
 		_animator = GetComponent<Animator>();
 	}
 
-	protected override void Update()
+	public override void Evaluate()
 	{
-		base.Update();
+		base.Evaluate();
 
 		if (_controller.Hand.IsHolding(_toolCategory) == false)
 			return;

@@ -39,7 +39,7 @@ public class PlayerCombat : MonoBehaviour
 		_animator = GetComponent<Animator>();
 	}
 
-	private void Update()
+	public void Evaluate()
 	{
 		AttackController();
 	}

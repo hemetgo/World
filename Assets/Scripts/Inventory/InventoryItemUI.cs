@@ -22,7 +22,6 @@ public class InventoryItemUI : MonoBehaviour, IPointerUpHandler, IPointerDownHan
 
 	Animator _animator;
 
-
 	private void Awake()
 	{
 		_animator = GetComponent<Animator>();
@@ -52,7 +51,9 @@ public class InventoryItemUI : MonoBehaviour, IPointerUpHandler, IPointerDownHan
 
 	public void Select(bool select)
 	{
-		_selectBorder.SetActive(select);
+		if (!_selectBorder) return;
+
+ 		_selectBorder.SetActive(select);
 	}
 
 	public void PlayAnimation()

@@ -10,15 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3116b03048bbb84d89ae7a03c2847f5, type: 3}
-  m_Name: DefaultDrop
+  m_Name: EnemyDrop_Default
   m_EditorClassIdentifier: 
   DropChance: 1
   Drops:
-  - Item: {fileID: 11400000, guid: e78e1e45a249d34409231af216aa9c83, type: 2}
-    MinAmount: 12
-    MaxAmount: 12
+  - Name: Ammo
+    Enabled: 1
     Weight: 5
-  - Item: {fileID: 11400000, guid: 826a38f829b27ec45a4662c9e1bab497, type: 2}
-    MinAmount: 36
-    MaxAmount: 36
+    Elements:
+    - Item: {fileID: 11400000, guid: e78e1e45a249d34409231af216aa9c83, type: 2}
+      MinAmount: 12
+      MaxAmount: 12
+      Weight: 3
+    - Item: {fileID: 11400000, guid: 826a38f829b27ec45a4662c9e1bab497, type: 2}
+      MinAmount: 36
+      MaxAmount: 36
+      Weight: 0
+  - Name: Bandage
+    Enabled: 0
     Weight: 5
+    Elements: []

@@ -9964,7 +9964,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 287861921975009758}
-  - component: {fileID: 2382540144836356992}
+  - component: {fileID: 4203770852576983930}
   m_Layer: 6
   m_Name: GroundCollider
   m_TagString: Untagged
@@ -9988,14 +9988,14 @@ Transform:
   - {fileID: 5130637852588033212}
   m_Father: {fileID: 155758478950302505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2382540144836356992
-BoxCollider:
+--- !u!136 &4203770852576983930
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5381524942648849812}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: b4993d07b90c39e4096f49177591dc0e, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -10006,6 +10006,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1.5841575, z: 1}
-  m_Center: {x: 0, y: -0.29207808, z: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.543557
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.27177724, z: 0}

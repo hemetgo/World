@@ -10,6 +10,7 @@ public class InventoryService
 
 	public static Action<ItemSettings, ItemData> OnItemAdded;
 	public static Action<ItemSettings, ItemData> OnItemRemoved;
+	public static Action<ItemSettings, ItemData, int> OnItemSwitched;
 	public static Action OnInventoryCleared;
 	public static Action OnInventoryChanged;
 
@@ -55,6 +56,13 @@ public class InventoryService
 		OnInventoryChanged?.Invoke();
 	}
 
+	public static void RemoveItem(ItemSettings settings)
+	{
+		EnsureData();
+
+		RemoveItem(settings, GetItem(settings.SaveID).Amount);
+	}
+
 	public static void RemoveItem(ItemSettings settings, int amount)
 	{
 		if (amount < 1) Debug.LogWarning($"The sent amount value is {amount} and it cannot be less than 1");
@@ -66,6 +74,21 @@ public class InventoryService
 
 		OnItemRemoved?.Invoke(settings, item);
 		OnInventoryChanged?.Invoke();
+	}
+
+	public static void SwitchItem(ItemSettings itemSettings, int amount, int itemIndex)
+	{
+		EnsureData();
+
+		if (inventory.Items.Count < itemIndex)
+		{
+			Debug.LogError("Failed on item switch: Index out of range");
+			return;
+		}
+
+		inventory.Items[itemIndex] = new ItemData(itemSettings.SaveID, amount);
+
+		OnItemSwitched?.Invoke(itemSettings, inventory.Items[itemIndex], itemIndex);
 	}
 
 #if UNITY_EDITOR

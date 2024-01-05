@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour
 	[field: SerializeField] public Transform TargetPoint { get; set; }
 
 	[HideInInspector] public EnemyHealth Health;
-	[HideInInspector] public EnemyRewardDrop Drop;
+	[HideInInspector] public ItemDropCaller Drop;
 
 	[HideInInspector] public Animator Animator;
 
@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
 	private void Awake()
 	{
 		Health = GetComponent<EnemyHealth>();
-		Drop = GetComponent<EnemyRewardDrop>();
+		Drop = GetComponent<ItemDropCaller>();
 
 		Animator = GetComponent<Animator>();
 

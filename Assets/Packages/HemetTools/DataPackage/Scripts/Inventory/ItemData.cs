@@ -8,9 +8,9 @@ public class ItemData
     public string SaveID;
     public int Amount;
 
-	public ItemData(string name, int amount)
+	public ItemData(string saveID, int amount)
 	{
-		SaveID = name;
+		SaveID = saveID;
 		Amount = amount;
 	}
 

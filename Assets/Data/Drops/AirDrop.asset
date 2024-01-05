@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3116b03048bbb84d89ae7a03c2847f5, type: 3}
+  m_Name: AirDrop
+  m_EditorClassIdentifier: 
+  DropChance: 1
+  Drops:
+  - Name: Weapon
+    Enabled: 1
+    Weight: 1
+    Elements:
+    - Item: {fileID: 11400000, guid: 7674db2e9f0f8ca4995ac88c696e97f6, type: 2}
+      MinAmount: 1
+      MaxAmount: 1
+      Weight: 0
+    - Item: {fileID: 11400000, guid: abe4305519afeb64eb59e252d57fe03a, type: 2}
+      MinAmount: 1
+      MaxAmount: 1
+      Weight: 0
+  - Name: Ammo
+    Enabled: 0
+    Weight: 5
+    Elements:
+    - Item: {fileID: 11400000, guid: e78e1e45a249d34409231af216aa9c83, type: 2}
+      MinAmount: 12
+      MaxAmount: 12
+      Weight: 3
+    - Item: {fileID: 11400000, guid: 826a38f829b27ec45a4662c9e1bab497, type: 2}
+      MinAmount: 36
+      MaxAmount: 36
+      Weight: 0
+  - Name: Bandage
+    Enabled: 0
+    Weight: 5
+    Elements: []

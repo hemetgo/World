@@ -21,6 +21,7 @@ public class InventoryUI : MonoBehaviour
 	{
 		InventoryService.OnItemAdded += OnItemAdded;
 		InventoryService.OnItemRemoved += OnItemRemoved;
+		InventoryService.OnItemSwitched += OnItemSwitched;
 		InventoryService.OnInventoryCleared += OnInventoryCleared;
 
 		GameEvents.Player.EquipItem += OnItemEquipped;
@@ -30,6 +31,7 @@ public class InventoryUI : MonoBehaviour
 	{
 		InventoryService.OnItemAdded -= OnItemAdded;
 		InventoryService.OnItemRemoved -= OnItemRemoved;
+		InventoryService.OnItemSwitched -= OnItemSwitched;
 		InventoryService.OnInventoryCleared -= OnInventoryCleared;
 
 		GameEvents.Player.EquipItem += OnItemEquipped;
@@ -61,6 +63,12 @@ public class InventoryUI : MonoBehaviour
 		uiItem.UpdateUI(item);
 
 		_uiItems.Add(uiItem);
+	}
+
+	void OnItemSwitched(ItemSettings settings, ItemData item, int index)
+	{
+		InventoryItemUI uiItem = _uiItems[index];
+		uiItem.UpdateUI(item);
 	}
 
 	void OnItemRemoved(ItemSettings settings, ItemData item)

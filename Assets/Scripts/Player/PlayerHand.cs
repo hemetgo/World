@@ -2,6 +2,7 @@ using HemetTools.Inspector;
 using System.Collections.Generic;
 using System.Net;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEditor.Rendering;
 using UnityEngine;
 using static UnityEditor.Timeline.Actions.MenuPriority;
@@ -12,6 +13,7 @@ public class PlayerHand : MonoBehaviour
 	[SerializeField] Transform _itemsContainer;
 	
 	List<HandItem> _handItems = new List<HandItem>();
+	List<HandItem> _handItemReferences = new List<HandItem>();
 
 	List<ItemData> InventoryItems => InventoryService.GetItems();
 
@@ -23,7 +25,7 @@ public class PlayerHand : MonoBehaviour
 			if (InventoryItems.Count == 0)
 				return null;
 
-			foreach(HandItem handItem in _handItems)
+			foreach(HandItem handItem in _handItemReferences)
 			{
 				if (handItem.ItemSettings.SaveID == InventoryItems[CurrentHandItemIndex].SaveID)
 				{
@@ -58,7 +60,7 @@ public class PlayerHand : MonoBehaviour
 	{
 		InventoryService.ClearInventory();
 		_initialItems.ForEach(item => InventoryService.AddItem(item, 1));
-		_handItems = new List<HandItem>(_itemsContainer.GetComponentsInChildren<HandItem>(true));
+		_handItemReferences = new List<HandItem>(_itemsContainer.GetComponentsInChildren<HandItem>(true));
 
 		CurrentHandItemIndex = 0;
 	}
@@ -110,7 +112,7 @@ public class PlayerHand : MonoBehaviour
 	{
 		HandItem currentItem = null;
 
-		foreach (HandItem item in _handItems)
+		foreach (HandItem item in _handItemReferences)
 		{
 			if (CurrentHandItem == null)
 				return;
@@ -130,6 +132,17 @@ public class PlayerHand : MonoBehaviour
 			currentItem.gameObject.SetActive(true);
 			currentItem.OnEquip();
 		}
+	}
+
+	public void SwitchCurrentItem(ItemSettings newItem, int newAmount)
+	{
+		ItemSettings currentItemSettings = CurrentHandItem.ItemSettings;
+		int amount = InventoryItems[CurrentHandItemIndex].Amount;
+
+		InventoryService.SwitchItem(newItem, newAmount, CurrentHandItemIndex);
+		ItemDropManager.Instance.Drop(currentItemSettings, amount, transform.position, true);
+
+		UpdateHand();
 	}
 
 	public void SelectItem(ItemSettings itemSettings)

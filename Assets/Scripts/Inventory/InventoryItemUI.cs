@@ -7,6 +7,8 @@ public class InventoryItemUI : MonoBehaviour, IPointerUpHandler, IPointerDownHan
 {
     [SerializeField] public ItemData ItemData;
 
+	[SerializeField] GameObject _selectBorder;
+
     [SerializeField] TextMeshProUGUI _itemText;
 	[SerializeField] Image _itemIcon;
 	[SerializeField] Image _background;
@@ -19,6 +21,7 @@ public class InventoryItemUI : MonoBehaviour, IPointerUpHandler, IPointerDownHan
 	float _downTimer;
 
 	Animator _animator;
+
 
 	private void Awake()
 	{
@@ -45,6 +48,11 @@ public class InventoryItemUI : MonoBehaviour, IPointerUpHandler, IPointerDownHan
 		_itemIcon.sprite = ItemSettings.Icon;
 
 		PlayAnimation();
+	}
+
+	public void Select(bool select)
+	{
+		_selectBorder.SetActive(select);
 	}
 
 	public void PlayAnimation()

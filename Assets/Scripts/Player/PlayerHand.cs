@@ -38,12 +38,14 @@ public class PlayerHand : MonoBehaviour
 	{
 		GameEvents.Inputs.OnScrollUp += NextItem;
 		GameEvents.Inputs.OnScrollDown += PreviousItem;
+		InventoryService.OnInventoryChanged += ItemIndex;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.Inputs.OnScrollUp -= NextItem;
 		GameEvents.Inputs.OnScrollDown -= PreviousItem;
+		InventoryService.OnInventoryChanged -= ItemIndex;
 	}
 
 	private void Awake()
@@ -55,6 +57,16 @@ public class PlayerHand : MonoBehaviour
 
 	private void Start()
 	{
+		UpdateHand();
+	}
+
+	void ItemIndex()
+	{
+		if (CurrentHandItemIndex >= InventoryItems.Count)
+		{
+			CurrentHandItemIndex = InventoryItems.Count - 1;
+		}
+
 		UpdateHand();
 	}
 

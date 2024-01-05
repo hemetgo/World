@@ -22,6 +22,8 @@ public class InventoryUI : MonoBehaviour
 		InventoryService.OnItemAdded += OnItemAdded;
 		InventoryService.OnItemRemoved += OnItemRemoved;
 		InventoryService.OnInventoryCleared += OnInventoryCleared;
+
+		GameEvents.Player.OnEquipItem += OnItemEquipped;
 	}
 
 	private void OnDisable()
@@ -29,6 +31,17 @@ public class InventoryUI : MonoBehaviour
 		InventoryService.OnItemAdded -= OnItemAdded;
 		InventoryService.OnItemRemoved -= OnItemRemoved;
 		InventoryService.OnInventoryCleared -= OnInventoryCleared;
+
+		GameEvents.Player.OnEquipItem += OnItemEquipped;
+	}
+
+	void OnItemEquipped(HandItem handItem)
+	{
+		for (int i = 0; i < _uiItems.Count; i++)
+		{
+			InventoryItemUI item = _uiItems[i];
+			item.Select(i == PlayerHand.CurrentHandItemIndex);
+		}
 	}
 
 	void OnInventoryCleared()

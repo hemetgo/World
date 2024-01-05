@@ -20,15 +20,15 @@ public class GameEvents
         public static Action<Health> OnHealthChanged;
         public static Action OnTakeDamage;
 
-        public static Action<HandItem> OnEquipItem;
+        public static Action<HandItem> EquipItem;
 
         public static Action<HandFireWeapon> OnFire;
         public static Action<HandFireWeapon> OnAmmoUpdate;
 
         public static Action<HandFireWeapon> OnNoAmmo;
-        public static Action<HandFireWeapon> OnRechargingStart;
-        public static Action<HandFireWeapon> OnRechargingStop;
-        public static Action<HandFireWeapon> OnRechargingComplete;
+        public static Action<HandFireWeapon> StartReloading;
+        public static Action<HandFireWeapon> StopReloading;
+        public static Action<HandFireWeapon> CompleteReloading;
     }
 
     public class Inputs

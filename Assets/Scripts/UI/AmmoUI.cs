@@ -7,15 +7,15 @@ public class AmmoUI : MonoBehaviour
 
 	private void OnEnable()
 	{
-		GameEvents.Player.OnRechargingComplete += UpdateUI;
-		GameEvents.Player.OnEquipItem += UpdateUI;
+		GameEvents.Player.CompleteReloading += UpdateUI;
+		GameEvents.Player.EquipItem += UpdateUI;
 		GameEvents.Player.OnAmmoUpdate += UpdateUI;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.Player.OnRechargingComplete -= UpdateUI;
-		GameEvents.Player.OnEquipItem -= UpdateUI;
+		GameEvents.Player.CompleteReloading -= UpdateUI;
+		GameEvents.Player.EquipItem -= UpdateUI;
 		GameEvents.Player.OnAmmoUpdate -= UpdateUI;
 	}
 

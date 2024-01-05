@@ -10,7 +10,7 @@ public class HandItem : MonoBehaviour
 
 	public virtual void OnEquip()
 	{
-		GameEvents.Player.OnEquipItem?.Invoke(this);
+		GameEvents.Player.EquipItem?.Invoke(this);
 	}
 
 	public virtual void OnUnequip()

@@ -7,6 +7,7 @@ using TMPro;
 public class WeaponGUI : MonoBehaviour
 {
 	[SerializeField] TextMeshProUGUI _feedbackText;
+	[SerializeField] TextMeshProUGUI _currentAmmoText;
 	[SerializeField] Slider _rechargingSlider;
 
 	HandFireWeapon _weapon;
@@ -18,40 +19,104 @@ public class WeaponGUI : MonoBehaviour
 		_rechargingSlider.value = _weapon.RechargingPercent;
 	}
 
+	void OnAmmoUpdate(HandItem item)
+	{
+		UpdateFeedbackText(item, FeedbackTextState.CurrentAmmo);
+	}
+
+	void UpdateFeedbackText(HandItem item, FeedbackTextState state)
+	{
+		switch (state)
+		{
+			case FeedbackTextState.Reloading:
+				ActiveText(_feedbackText);
+				_feedbackText.text = "RELOADING";
+				break;
+
+			case FeedbackTextState.CurrentAmmo:
+				ActiveText(_currentAmmoText);
+				if (item.IsTypeOf(typeof(HandFireWeapon)))
+				{
+					HandFireWeapon weapon = (HandFireWeapon)item;
+					_currentAmmoText.text = $"{weapon.CurrentBullets}/{weapon.FireWeaponSettings.GetReserveAmmo()}";
+				}
+				else
+				{
+					_currentAmmoText.text = "";
+				}
+				break;
+
+			case FeedbackTextState.None:
+				ActiveText(null);
+
+				break;
+		}
+	}
+
 	private void OnEnable()
 	{
-		GameEvents.Player.OnRechargingStart += OnRechargingStart;
-		GameEvents.Player.OnEquipItem += OnRechargingStop;
-		GameEvents.Player.OnRechargingStop += OnRechargingStop;
-		GameEvents.Player.OnRechargingComplete += OnRechargingComplete;
+		GameEvents.Player.OnAmmoUpdate += OnAmmoUpdate;
+		GameEvents.Player.EquipItem += OnEquipItem;
+		GameEvents.Player.StartReloading += OnStartReloading;
+		GameEvents.Player.StopReloading += OnStopReloading;
+		GameEvents.Player.CompleteReloading += OnCompleteReloading;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.Player.OnRechargingStart -= OnRechargingStart;
-		GameEvents.Player.OnEquipItem -= OnRechargingStop;
-		GameEvents.Player.OnRechargingStop -= OnRechargingStop;
-		GameEvents.Player.OnRechargingComplete -= OnRechargingComplete;
+		GameEvents.Player.OnAmmoUpdate -= OnAmmoUpdate;
+		GameEvents.Player.EquipItem -= OnEquipItem;
+		GameEvents.Player.StartReloading -= OnStartReloading;
+		GameEvents.Player.StopReloading -= OnStopReloading;
+		GameEvents.Player.CompleteReloading -= OnCompleteReloading;
 	}
 
-	void OnRechargingStart(HandFireWeapon weapon)
+	void ActiveText(TextMeshProUGUI text)
+	{
+		List<TextMeshProUGUI> texts = new List<TextMeshProUGUI>()
+		{
+			_feedbackText, _currentAmmoText
+		};
+
+		texts.ForEach(t => t.gameObject.SetActive(t == text));
+	}
+
+	void OnEquipItem(HandItem handItem)
+	{
+		if (handItem.IsTypeOf(typeof(HandFireWeapon)))
+		{
+			_weapon = handItem as HandFireWeapon;
+			UpdateFeedbackText(handItem, FeedbackTextState.CurrentAmmo);
+		} 
+		else 
+			UpdateFeedbackText(handItem, FeedbackTextState.None);
+
+		_rechargingSlider.gameObject.SetActive(false);
+	}
+
+	void OnStartReloading(HandFireWeapon weapon)
 	{
 		_weapon = weapon;
-		_feedbackText.gameObject.SetActive(true);
+		UpdateFeedbackText(weapon, FeedbackTextState.Reloading);
 		_rechargingSlider.gameObject.SetActive(true);
 	}
 
-	void OnRechargingStop(HandItem item)
+	void OnStopReloading(HandItem handItem)
 	{
 		_weapon = null;
-		_feedbackText.gameObject.SetActive(false);
+		UpdateFeedbackText(handItem, FeedbackTextState.None);
 		_rechargingSlider.gameObject.SetActive(false);
 	}
 
-	void OnRechargingComplete(HandFireWeapon weapon)
+	void OnCompleteReloading(HandFireWeapon weapon)
 	{
 		_weapon = null;
-		_feedbackText.gameObject.SetActive(false);
+		UpdateFeedbackText(weapon, FeedbackTextState.CurrentAmmo);
 		_rechargingSlider.gameObject.SetActive(false);
+	}
+
+	enum FeedbackTextState
+	{
+		Reloading, NoAmmo, CurrentAmmo, None
 	}
 }

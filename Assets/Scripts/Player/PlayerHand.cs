@@ -4,6 +4,7 @@ using System.Net;
 using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
+using static UnityEditor.Timeline.Actions.MenuPriority;
 
 public class PlayerHand : MonoBehaviour
 {
@@ -98,6 +99,8 @@ public class PlayerHand : MonoBehaviour
 
 	public void UpdateHand()
 	{
+		HandItem currentItem = null;
+
 		foreach (HandItem item in _handItems)
 		{
 			if (CurrentHandItem == null)
@@ -105,14 +108,16 @@ public class PlayerHand : MonoBehaviour
 
 			if (item.ItemSettings == CurrentHandItem.ItemSettings)
 			{
-				item.gameObject.SetActive(true);
-				item.OnEquip();
+				currentItem = item;
 				continue;
 			}
-			
+
 			item.gameObject.SetActive(false);
 			item.OnUnequip();
 		}
+
+		currentItem.gameObject.SetActive(true);
+		currentItem.OnEquip();
 	}
 
 	public void SelectItem(ItemSettings itemSettings)

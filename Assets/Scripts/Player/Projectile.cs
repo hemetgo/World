@@ -8,12 +8,12 @@ public class Projectile : MonoBehaviour
     [SerializeField] FireWeaponSettings _fireWeaponSettings;
     [SerializeField] GameObject _hitVFX;
 
-    public void Setup(Vector3 spawnPoint, Vector3 targetPosition, FireWeaponSettings weaponSettings)
+    public void Setup(Vector3 spawnPoint, Vector3 direction, FireWeaponSettings weaponSettings)
     {
         Rigidbody rigidbody = GetComponent<Rigidbody>();
 
-        transform.position = spawnPoint;
-        transform.LookAt(targetPosition);
+		transform.position = spawnPoint;
+        transform.LookAt(transform.position + direction);
         rigidbody.velocity = transform.forward * weaponSettings.ProjectileSpeed;
 
 		_fireWeaponSettings = weaponSettings;

@@ -31,11 +31,20 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
-		if (!IsCollecting && !IsShooting) 
+		if ((!IsCollecting && !IsShooting) || Health.IsDead) 
 		{
 			Animator.speed = 1;
 		}
 
+		if (!Health.IsDead)
+		{
+			LookToCursor();
+		}
+		
+	}
+
+	public void LookToCursor()
+	{
 		LookAt(InputHelper.GetRelativeMouseWorldPosition(transform));
 	}
 

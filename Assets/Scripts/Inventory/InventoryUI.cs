@@ -23,7 +23,7 @@ public class InventoryUI : MonoBehaviour
 		InventoryService.OnItemRemoved += OnItemRemoved;
 		InventoryService.OnInventoryCleared += OnInventoryCleared;
 
-		GameEvents.Player.OnEquipItem += OnItemEquipped;
+		GameEvents.Player.EquipItem += OnItemEquipped;
 	}
 
 	private void OnDisable()
@@ -32,7 +32,7 @@ public class InventoryUI : MonoBehaviour
 		InventoryService.OnItemRemoved -= OnItemRemoved;
 		InventoryService.OnInventoryCleared -= OnInventoryCleared;
 
-		GameEvents.Player.OnEquipItem += OnItemEquipped;
+		GameEvents.Player.EquipItem += OnItemEquipped;
 	}
 
 	void OnItemEquipped(HandItem handItem)

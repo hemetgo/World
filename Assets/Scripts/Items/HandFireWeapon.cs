@@ -19,7 +19,7 @@ public class HandFireWeapon : HandWeapon
 	{
 		get
 		{
-			if (!HaveBullets) return false;
+			if (!HaveBullets || IsReloading) return false;
 
 
 			return true;
@@ -29,11 +29,13 @@ public class HandFireWeapon : HandWeapon
 	private void OnEnable()
 	{
 		GameEvents.Inputs.OnReload += StartReload;
+		InventoryService.OnInventoryChanged += OnUpdateAmmo;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.Inputs.OnReload -= StartReload;
+		InventoryService.OnInventoryChanged -= OnUpdateAmmo;
 	}
 
 	private void Awake()
@@ -54,8 +56,6 @@ public class HandFireWeapon : HandWeapon
 	public override void OnEquip()
 	{
 		base.OnEquip();
-
-		InventoryService.OnInventoryChanged += OnUpdateAmmo;
 	}
 
 	public override void OnUnequip()
@@ -65,25 +65,23 @@ public class HandFireWeapon : HandWeapon
 		if (IsReloading)
 		{
 			IsReloading = false;
-			GameEvents.Player.OnRechargingStop?.Invoke(this);
+			GameEvents.Player.StopReloading?.Invoke(this);
 		}
-
-		InventoryService.OnInventoryChanged -= OnUpdateAmmo;
 	}
 
 	public override void OnUse()
 	{
 		base.OnUse();
-		Fire(InputHelper.GetRelativeMouseWorldPosition(transform));
+		Fire(PlayerController.Instance.transform.forward);
 	}
 
-	public void Fire(Vector3 targetPosition)
+	public void Fire(Vector3 direction)
 	{
 		if (CurrentBullets <= 0) return;
 
 		Projectile projectile = Instantiate(FireWeaponSettings.ProjectilePrefab);
 		GameObject muzzleFlash = Instantiate(FireWeaponSettings.MuzzleFlashPrefab, _firePoint.position, transform.rotation);
-		projectile.Setup(_firePoint.position, targetPosition, FireWeaponSettings);
+		projectile.Setup(_firePoint.position, direction, FireWeaponSettings);
 
 		CurrentBullets--;
 
@@ -99,7 +97,7 @@ public class HandFireWeapon : HandWeapon
 	public void InstaRecharge()
 	{
 		CurrentBullets = FireWeaponSettings.MagazineCapacity;
-		GameEvents.Player.OnRechargingComplete?.Invoke(this);
+		GameEvents.Player.CompleteReloading?.Invoke(this);
 	}
 
 	void RechargingControl()
@@ -115,7 +113,7 @@ public class HandFireWeapon : HandWeapon
 				int rechargedAmmo = FireWeaponSettings.DiscountAmmoFromInventory(CurrentBullets);
 				CurrentBullets += rechargedAmmo;
 
-				GameEvents.Player.OnRechargingComplete?.Invoke(this);
+				GameEvents.Player.CompleteReloading?.Invoke(this);
 			}
 		}
 		else if (CurrentBullets <= 0 && FireWeaponSettings.GetReserveAmmo() > 0)
@@ -132,6 +130,6 @@ public class HandFireWeapon : HandWeapon
 
 		_rechargingTimer = 0;
 
-		GameEvents.Player.OnRechargingStart?.Invoke(this);
+		GameEvents.Player.StartReloading?.Invoke(this);
 	}
 }

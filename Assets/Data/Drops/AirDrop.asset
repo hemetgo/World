@@ -27,13 +27,13 @@ MonoBehaviour:
       MaxAmount: 1
       Weight: 0
   - Name: Ammo
-    Enabled: 0
+    Enabled: 1
     Weight: 5
     Elements:
     - Item: {fileID: 11400000, guid: e78e1e45a249d34409231af216aa9c83, type: 2}
       MinAmount: 12
       MaxAmount: 12
-      Weight: 3
+      Weight: 2
     - Item: {fileID: 11400000, guid: 826a38f829b27ec45a4662c9e1bab497, type: 2}
       MinAmount: 36
       MaxAmount: 36

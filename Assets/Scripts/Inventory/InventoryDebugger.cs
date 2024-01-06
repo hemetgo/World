@@ -23,7 +23,7 @@ public class InventoryDebugger : MonoBehaviour
 	[Button]
 	public void ClearInventory()
 	{
-		InventoryService.ClearInventory();
+		InventoryService.ResetInventory();
 	}
 }
 #endif

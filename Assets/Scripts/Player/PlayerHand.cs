@@ -12,7 +12,6 @@ public class PlayerHand : MonoBehaviour
 	[SerializeField] List<ItemSettings> _initialItems = new List<ItemSettings>();
 	[SerializeField] Transform _itemsContainer;
 	
-	List<HandItem> _handItems = new List<HandItem>();
 	List<HandItem> _handItemReferences = new List<HandItem>();
 
 	List<ItemData> InventoryItems => InventoryService.GetItems();
@@ -56,9 +55,8 @@ public class PlayerHand : MonoBehaviour
 		OnDisable();
 	}
 
-	private void Awake()
+	public void Initialize()
 	{
-		InventoryService.ClearInventory();
 		_initialItems.ForEach(item => InventoryService.AddItem(item, 1));
 		_handItemReferences = new List<HandItem>(_itemsContainer.GetComponentsInChildren<HandItem>(true));
 

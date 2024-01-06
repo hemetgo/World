@@ -33,7 +33,7 @@ public class PlayerCombat : MonoBehaviour
 		GameEvents.Inputs.OnFire -= SetFiring;
 	}
 
-	private void Start()
+	public void Initialize()
 	{
 		_controller = GetComponent<PlayerController>();
 		_animator = GetComponent<Animator>();

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 552d48918964f744d8fd60c1a7f92a77, type: 3}
   m_Name: CurrencyDebugger
   m_EditorClassIdentifier: 
-  _currency: {fileID: 11400000, guid: 45e550d42a21de84c988da4f4bcf6bef, type: 2}
+  _currency: {fileID: 11400000, guid: 8c158ff7d5a895d418b3b9c52b1e0029, type: 2}
   _currencyValue: 10

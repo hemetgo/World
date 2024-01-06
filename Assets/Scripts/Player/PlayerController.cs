@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
 	public bool IsCollecting => Animator.GetBool("Collecting");
 	public bool IsShooting => Animator.GetBool("Firing") || Animator.GetBool("Punching");
 
-	private void Awake()
+	public void Initialize()
 	{
 		Instance = this;
 
@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
 		Hand = GetComponent<PlayerHand>();
 		Combat = GetComponent<PlayerCombat>();
 		Health = GetComponent<PlayerHealth>();
+
+		Hand.Initialize();
+		Combat.Initialize();
 
 		Animator = GetComponent<Animator>();
 	}

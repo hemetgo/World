@@ -6,13 +6,11 @@ using TMPro;
 public class CurrencyText : MonoBehaviour
 {
     [SerializeField] CurrencySettings _currency;
-    TextMeshProUGUI _text;
+    [SerializeField] string _prefix;
 
     private void Start()
     {
-        _text = GetComponent<TextMeshProUGUI>();
-
-        OnCurrencyUpdated();
+         OnCurrencyUpdated();
     }
 
     private void OnEnable()
@@ -27,12 +25,12 @@ public class CurrencyText : MonoBehaviour
 
     private void OnCurrencyUpdated()
     {
-        if (_currency)
+        if (_currency != null)
         {
-            _text.text = CurrencyService.GetCurrency(_currency.CurrencyName).ToString();
+			GetComponent<TextMeshProUGUI>().text = $"{_prefix}{CurrencyService.GetCurrency(_currency)}";
             return;
         }
 
-        _text.text = "Without currency reference";
+		GetComponent<TextMeshProUGUI>().text = "No currency reference";
     }
 }

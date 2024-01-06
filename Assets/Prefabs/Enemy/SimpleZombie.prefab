@@ -683,6 +683,7 @@ GameObject:
   - component: {fileID: 4625456454100594967}
   - component: {fileID: -9178775797183551475}
   - component: {fileID: 7059758888423674523}
+  - component: {fileID: -3379776121237222597}
   m_Layer: 0
   m_Name: SimpleZombie
   m_TagString: Untagged
@@ -721,7 +722,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <TargetPoint>k__BackingField: {fileID: 8442693658896461442}
   Health: {fileID: 0}
-  Drop: {fileID: 0}
+  ItemDropCaller: {fileID: 0}
+  CurrencyDropCaller: {fileID: 0}
   Animator: {fileID: 0}
 --- !u!114 &4405865252067087402
 MonoBehaviour:
@@ -837,6 +839,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dropSettings: {fileID: 11400000, guid: 65ccef3d50d64aa44b64c2e7e6a5b360, type: 2}
+  _airDrop: 0
 --- !u!114 &7059758888423674523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -852,6 +855,22 @@ MonoBehaviour:
   settings: {fileID: 11400000, guid: 68629ffb88b775c4da252db814ea478e, type: 2}
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-3379776121237222597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5126289456116498699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4c69376831e8984884b6ec99fcc842f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currency: {fileID: 11400000, guid: 8c158ff7d5a895d418b3b9c52b1e0029, type: 2}
+  _dropAmount:
+    MinValue: 100
+    MaxValue: 100
 --- !u!1 &5520050050725258323
 GameObject:
   m_ObjectHideFlags: 0

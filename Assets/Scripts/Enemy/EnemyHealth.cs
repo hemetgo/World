@@ -27,7 +27,8 @@ public class EnemyHealth : Health
 	{
 		_controller.Animator.SetTrigger("Die");
 
-		_controller.Drop.ClaimRandomDrop();
+		_controller.CurrencyDropCaller.ClaimRandomCurrency();
+		_controller.ItemDropCaller.ClaimRandomDrop();
 
 		EnemyService.UnregisterEnemy(_controller);
 		GetComponent<Collider>().enabled = false;

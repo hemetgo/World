@@ -92,12 +92,15 @@ public class CurrencyService
 
     private static void Save()
     {
+        EnsureCurrencyData();
         DataManager.Save(currencyData);
-    }
+	}
 
     public static void ResetCurrency(string currencyId)
     {
-        currencyData.SetCurrency(currencyId, 0);
+        EnsureCurrencyData();
+
+		currencyData.SetCurrency(currencyId, 0);
         Save();
 
         OnAnyCurrencyUpdated?.Invoke();
@@ -108,10 +111,12 @@ public class CurrencyService
 #endif
     public static void ResetCurrencies()
 	{
-        currencyData.Reset();
-        DataManager.Save(currencyData);
+        EnsureCurrencyData();
 
-        OnAnyCurrencyUpdated?.Invoke();
+        currencyData.Clear();
+		Save();
+
+		OnAnyCurrencyUpdated?.Invoke();
     }
 }
 
@@ -122,7 +127,7 @@ public class CurrencyData
 
     public CurrencyData() { }
 
-    public void Reset()
+    public void Clear()
     {
         Currencies.Clear();
     }
@@ -134,7 +139,7 @@ public class CurrencyData
             return value;
         }
 
-        Currencies[currencyId] = 0;
+        Currencies.Add(currencyId, 0);
         return Currencies[currencyId];
     }
 

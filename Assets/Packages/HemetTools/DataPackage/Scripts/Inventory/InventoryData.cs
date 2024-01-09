@@ -62,7 +62,7 @@ public class InventoryData
 	}
 
 	/// <summary>
-	/// Return an item with specified name, if it isn't exists, create one 
+	/// Return an item with specified id, if it isn't exists, create one 
 	/// </summary>
 	private ItemData GetItem(string itemID)
 	{
@@ -79,9 +79,34 @@ public class InventoryData
 	}
 
 	/// <summary>
+	/// Return an item from specified index from items list, if it isn't exists, return null
+	/// </summary>
+	public ItemData GetItem(int inventoryIndex)
+	{
+		if (TryGetItem(inventoryIndex, out ItemData item))
+		{
+			return item;
+		}
+
+		return null;
+	}
+
+	public bool TryGetItem(int inventoryIndex, out ItemData item)
+	{
+		if (Items.Count < inventoryIndex)
+		{
+			item = Items[inventoryIndex];
+			return true;
+		}
+
+		item = null;
+		return false;
+	}
+
+	/// <summary>
 	/// Return an item with specified name, if it isn't exists, create one 
 	/// </summary>
-	private ItemData GetItem(string itemID, bool cumulative)
+	public ItemData GetItem(string itemID, bool cumulative)
 	{
 		if (cumulative)
 		{

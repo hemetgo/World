@@ -42,7 +42,7 @@ public class InventoryUI : MonoBehaviour
 		for (int i = 0; i < _uiItems.Count; i++)
 		{
 			InventoryItemUI item = _uiItems[i];
-			item.Select(i == PlayerHand.CurrentHandItemIndex);
+			//item.Select(i == PlayerHand.CurrentHandItemIndex);
 		}
 	}
 

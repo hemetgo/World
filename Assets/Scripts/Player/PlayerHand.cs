@@ -1,53 +1,45 @@
-using HemetTools.Inspector;
 using System.Collections.Generic;
-using System.Net;
-using TMPro;
-using Unity.VisualScripting.Antlr3.Runtime;
-using UnityEditor.Rendering;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Timeline.Actions.MenuPriority;
 
 public class PlayerHand : MonoBehaviour
 {
-	[SerializeField] List<ItemSettings> _initialItems = new List<ItemSettings>();
 	[SerializeField] Transform _itemsContainer;
+	[SerializeField] InitialWeaponInventory _initialItems;
 	
 	List<HandItem> _handItemReferences = new List<HandItem>();
 
-	List<ItemData> InventoryItems => InventoryService.GetItems();
+	public static WeaponItemType CurrentItemType { get; private set; }
+	public static ItemData CurrentItemData => WeaponInventoryService.GetItem(CurrentItemType);
 
-	public static int CurrentHandItemIndex;
-	public HandItem CurrentHandItem
+	public HandItem CurrentHandItem 
 	{
 		get
 		{
-			if (InventoryItems.Count == 0)
-				return null;
-
-			foreach(HandItem handItem in _handItemReferences)
-			{
-				if (handItem.ItemSettings.SaveID == InventoryItems[CurrentHandItemIndex].SaveID)
+            foreach (var item in _handItemReferences)
+            {
+                if (item.ItemSettings.SaveID == CurrentItemData.SaveID)
 				{
-					return handItem;
+					return item;
 				}
-			}
-
-			return null;
-		}
+            }
+            return null;
+		} 
 	}
 
 	private void OnEnable()
 	{
 		GameEvents.Inputs.OnScrollUp += NextItem;
 		GameEvents.Inputs.OnScrollDown += PreviousItem;
-		InventoryService.OnInventoryChanged += ItemIndex;
+		WeaponInventoryService.OnInventoryChanged += OnInventoryChanged;
 	}
 
 	private void OnDisable()
 	{
 		GameEvents.Inputs.OnScrollUp -= NextItem;
 		GameEvents.Inputs.OnScrollDown -= PreviousItem;
-		InventoryService.OnInventoryChanged -= ItemIndex;
+		WeaponInventoryService.OnInventoryChanged -= OnInventoryChanged;
 	}
 
 	private void OnDestroy()
@@ -57,10 +49,10 @@ public class PlayerHand : MonoBehaviour
 
 	public void Initialize()
 	{
-		_initialItems.ForEach(item => InventoryService.AddItem(item, 1));
+		_initialItems.Initialize();
 		_handItemReferences = new List<HandItem>(_itemsContainer.GetComponentsInChildren<HandItem>(true));
 
-		CurrentHandItemIndex = 0;
+		CurrentItemType = WeaponItemType.Pistol;
 	}
 
 	private void Start()
@@ -70,11 +62,14 @@ public class PlayerHand : MonoBehaviour
 
 	public void Evaluate() { }
 
-	void ItemIndex()
+	void OnInventoryChanged()
 	{
-		if (CurrentHandItemIndex >= InventoryItems.Count)
+		if (CurrentItemData == null)
 		{
-			CurrentHandItemIndex = InventoryItems.Count - 1;
+			if (CurrentItemType == WeaponItemType.MeleeWeapon)
+				NextItem();
+			else
+				PreviousItem();
 		}
 
 		UpdateHand();
@@ -134,13 +129,13 @@ public class PlayerHand : MonoBehaviour
 
 	public void SwitchCurrentItem(ItemSettings newItem, int newAmount)
 	{
-		ItemSettings currentItemSettings = CurrentHandItem.ItemSettings;
-		int amount = InventoryItems[CurrentHandItemIndex].Amount;
+		//ItemSettings currentItemSettings = CurrentHandItem.ItemSettings;
+		//int amount = InventoryItems[CurrentHandItemIndex].Amount;
 
-		InventoryService.SwitchItem(newItem, newAmount, CurrentHandItemIndex);
-		ItemDropManager.Instance.Drop(currentItemSettings, amount, transform.position, true);
+		//InventoryService.SwitchItem(newItem, newAmount, CurrentHandItemIndex);
+		//ItemDropManager.Instance.Drop(currentItemSettings, amount, transform.position, true);
 
-		UpdateHand();
+		//UpdateHand();
 	}
 
 	public void SelectItem(ItemSettings itemSettings)
@@ -151,32 +146,70 @@ public class PlayerHand : MonoBehaviour
 			ItemData item = list[i];
 			if (item.SaveID.Equals(itemSettings.SaveID))
 			{
-				CurrentHandItemIndex = i;
+				//CurrentHandItemIndex = i;
 				UpdateHand();
 				return;
 			}
 		}
 	}
 
-	public void NextItem()
+	WeaponItemType GetNextWeaponItemType(WeaponItemType current)
 	{
-		CurrentHandItemIndex++;
-		if (CurrentHandItemIndex >= InventoryService.GetItems().Count)
+		List<ItemData> items = new List<ItemData>(WeaponInventoryService.Items.Values.ToList());
+
+		int next = (int)current + 1;
+		if (next >= items.Count)
 		{
-			CurrentHandItemIndex = 0;
+			next = 0;
 		}
 
+		for (int i = next; i < items.Count; i++)
+        {
+			ItemData item = items[i];
+
+			if (item != null)
+			{
+				next = i;
+				return (WeaponItemType)next;
+			}
+        }
+
+		return current;
+    }
+
+	WeaponItemType GetPreviousWeaponItemType(WeaponItemType current)
+	{
+		List<ItemData> items = new List<ItemData>(WeaponInventoryService.Items.Values.ToList());
+
+		int next = (int)current - 1;
+		if (next < 0)
+		{
+			next = items.Count - 1;
+		}
+
+		for (int i = next; i < items.Count; i--)
+		{
+			ItemData item = items[i];
+
+			if (item != null)
+			{
+				next = i;
+				return (WeaponItemType)next;
+			}
+		}
+
+		return current;
+	}
+
+	public void NextItem()
+	{
+		CurrentItemType = GetNextWeaponItemType(CurrentItemType);
 		UpdateHand();
 	}
 
 	public void PreviousItem()
 	{
-		CurrentHandItemIndex--;
-		if (CurrentHandItemIndex < 0)
-		{
-			CurrentHandItemIndex = InventoryService.GetItems().Count - 1;
-		}
-
+		CurrentItemType = GetPreviousWeaponItemType(CurrentItemType);
 		UpdateHand();
 	}
 

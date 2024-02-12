@@ -18,7 +18,7 @@ public class HandItem : MonoBehaviour
 
 	}
 
-	public virtual void OnUse()
+	public virtual void Use()
 	{
 
 	}

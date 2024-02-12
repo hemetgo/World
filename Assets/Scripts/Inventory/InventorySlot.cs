@@ -28,6 +28,7 @@ public class InventorySlot : MonoBehaviour
 	{
 		GameEvents.Player.EquipItem += OnItemEquipped;
 		WeaponInventoryService.OnInventoryChanged += UpdateUI;
+		UpdateUI();
 	}
 
 	private void OnDisable()

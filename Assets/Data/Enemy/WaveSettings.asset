@@ -21,4 +21,4 @@ MonoBehaviour:
   SpawnRange: 2
   EnemiesToSpawn: 05000000070000000a0000000f000000140000001900000023000000320000004b00000064000000
   WaveWaitTime: 1
-  PrepareWaveTime: 60
+  PrepareWaveTime: 5

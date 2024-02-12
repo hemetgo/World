@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Unity.VisualScripting.ReorderableList;
 
 public class WeaponInventoryService
 {
-    private static WeaponInventoryData _weaponInventoryData { get; set; }
+	public static WeaponItemCategories Categories;
+	private static WeaponInventoryData _weaponInventoryData { get; set; }
 
 	public static Action OnInventoryChanged;
 
@@ -19,11 +22,13 @@ public class WeaponInventoryService
 
 	private static void Save()
 	{
+		EnsureData();
 		DataManager.Save(_weaponInventoryData);
 	}
 
 	public static ItemData GetItem(WeaponItemType type)
 	{
+		EnsureData();
 		return _weaponInventoryData.GetItem(type);
 	}
 
@@ -51,18 +56,33 @@ public class WeaponInventoryService
 		OnInventoryChanged?.Invoke();
 	}
 
+	public static void SetItem(ItemSettings itemSettings, int amount)
+	{
+		EnsureData();
+		_weaponInventoryData.SetItem(itemSettings, amount);
+		Save();
+		OnInventoryChanged?.Invoke();
+	}
+
 	public static void AddItem(ItemSettings itemSettings, int amount)
 	{
 		if (itemSettings == null) 
 			return;
 
 		EnsureData();
-		_weaponInventoryData.AddItem(itemSettings, amount);
+		
+		if (itemSettings.Category == Categories.MeleeWeapon) SetMeleeWeapon(itemSettings);
+		else if (itemSettings.Category == Categories.Pistol) SetPistol(itemSettings as FireWeaponSettings);
+		else if (itemSettings.Category == Categories.HeavyWeapon) SetHeavyWeapon(itemSettings as FireWeaponSettings);
+		else SetItem(itemSettings, amount);
+
+		UnityEngine.Debug.Log($"{amount}x {itemSettings} has been added");
+
 		Save();
 		OnInventoryChanged?.Invoke();
 	}
 
-	public static void RemoveWeapon(WeaponItemType type)
+	public static void RemoveWeaponItem(WeaponItemType type)
 	{
 		EnsureData();
 		_weaponInventoryData.Items[(int)type] = null;
@@ -74,8 +94,13 @@ public class WeaponInventoryService
 public enum WeaponItemType
 {
 	MeleeWeapon = 0, 
-	Pistol = 1, 
-	HeavyWeapon = 2, 
-	Item1 = 3, 
-	Item2 = 4
+	RangedWeapon = 1, 
+}
+
+[System.Serializable]
+public struct WeaponItemCategories
+{
+	public ItemCategorySettings MeleeWeapon;
+	public ItemCategorySettings Pistol;
+	public ItemCategorySettings HeavyWeapon;
 }

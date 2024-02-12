@@ -50,7 +50,7 @@ public class ItemDrop : MonoBehaviour
 	private void Catch()
 	{
 		if (FastCatchEnabled())
-			InventoryService.AddItem(_item, _amount);
+			WeaponInventoryService.AddItem(_item, _amount);
 		else
 			PlayerController.Instance.Hand.SwitchCurrentItem(_item, _amount);
 

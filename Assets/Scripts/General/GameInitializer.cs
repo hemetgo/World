@@ -13,8 +13,7 @@ public class GameInitializer : MonoBehaviour
 		InventoryService.ResetInventory();
 		CurrencyService.ResetCurrencies();
 
-		inventoryReferences.Initialize();
-		//inventoryUI.Initialize();
 		player.Initialize();
+		inventoryReferences.Initialize();
 	}
 }

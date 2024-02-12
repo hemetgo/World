@@ -14,7 +14,7 @@ public class HandMeleeWeapon : HandWeapon
 		base.OnUnequip();
 	}
 
-	public override void OnUse()
+	public override void Use()
 	{
 		foreach(EnemyController enemy in EnemyService.FindEnemiesOnRange(transform.position, Settings.Range))
 		{

@@ -42,4 +42,11 @@ public class PlayerHealth : Health
 
 		GameEvents.Game.GameOver?.Invoke();
 	}
+
+	public void Heal(int value)
+	{
+		CurrentHealth += value;
+		if (CurrentHealth > MaxHealth) CurrentHealth = MaxHealth;
+		print("Spawn heal vfx");
+	}
 }   

@@ -39,6 +39,7 @@ public class GameEvents
         public static Action<InputState> OnFire;
         public static Action<InputState> OnPause;
         public static Action<InputState> OnInteract;
+        public static Action<InputState> OnItem;
         public static Action OnScrollUp;
         public static Action OnScrollDown;
     }

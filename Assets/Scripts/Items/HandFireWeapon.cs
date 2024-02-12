@@ -69,9 +69,9 @@ public class HandFireWeapon : HandWeapon
 		}
 	}
 
-	public override void OnUse()
+	public override void Use()
 	{
-		base.OnUse();
+		base.Use();
 		Fire(PlayerController.Instance.transform.forward);
 	}
 

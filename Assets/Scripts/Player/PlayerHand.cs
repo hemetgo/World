@@ -6,40 +6,28 @@ using UnityEngine;
 public class PlayerHand : MonoBehaviour
 {
 	[SerializeField] Transform _itemsContainer;
-	[SerializeField] InitialWeaponInventory _initialItems;
 	
-	List<HandItem> _handItemReferences = new List<HandItem>();
+	Dictionary<string, HandItem> _handItemReferences = new Dictionary<string, HandItem>();
+
+	[SerializeField] HandMeleeWeapon _meleeWeapon;
+	[SerializeField] HandFireWeapon _rangedWeapon;
 
 	public static WeaponItemType CurrentItemType { get; private set; }
-	public static ItemData CurrentItemData => WeaponInventoryService.GetItem(CurrentItemType);
 
-	public HandItem CurrentHandItem 
-	{
-		get
-		{
-            foreach (var item in _handItemReferences)
-            {
-                if (item.ItemSettings.SaveID == CurrentItemData.SaveID)
-				{
-					return item;
-				}
-            }
-            return null;
-		} 
-	}
+	bool _initialized;
+
+	public HandItem CurrentHandItem => CurrentItemType == WeaponItemType.MeleeWeapon ? _meleeWeapon : _rangedWeapon;
 
 	private void OnEnable()
 	{
-		GameEvents.Inputs.OnScrollUp += NextItem;
-		GameEvents.Inputs.OnScrollDown += PreviousItem;
-		WeaponInventoryService.OnInventoryChanged += OnInventoryChanged;
+		GameEvents.Inputs.OnScrollUp += SwitchItem;
+		GameEvents.Inputs.OnScrollDown += SwitchItem;
 	}
 
 	private void OnDisable()
 	{
-		GameEvents.Inputs.OnScrollUp -= NextItem;
-		GameEvents.Inputs.OnScrollDown -= PreviousItem;
-		WeaponInventoryService.OnInventoryChanged -= OnInventoryChanged;
+		GameEvents.Inputs.OnScrollUp -= SwitchItem;
+		GameEvents.Inputs.OnScrollDown -= SwitchItem;
 	}
 
 	private void OnDestroy()
@@ -49,10 +37,19 @@ public class PlayerHand : MonoBehaviour
 
 	public void Initialize()
 	{
-		_initialItems.Initialize();
-		_handItemReferences = new List<HandItem>(_itemsContainer.GetComponentsInChildren<HandItem>(true));
+		if (!_initialized) 
+			return;
 
-		CurrentItemType = WeaponItemType.Pistol;
+		_initialized = true;
+		
+		_handItemReferences.Clear();
+		foreach (HandItem handItem in _itemsContainer.GetComponentsInChildren<HandItem>(true))
+		{
+			_handItemReferences[handItem.ItemSettings.SaveID] = handItem;
+		}
+
+		CurrentItemType = WeaponItemType.RangedWeapon;
+		SwitchItem();
 	}
 
 	private void Start()
@@ -62,17 +59,14 @@ public class PlayerHand : MonoBehaviour
 
 	public void Evaluate() { }
 
-	void OnInventoryChanged()
+	HandItem GetHandItem(string saveID)
 	{
-		if (CurrentItemData == null)
+		if (_handItemReferences.TryGetValue(saveID, out var Item))
 		{
-			if (CurrentItemType == WeaponItemType.MeleeWeapon)
-				NextItem();
-			else
-				PreviousItem();
+			return Item;
 		}
 
-		UpdateHand();
+		return null;
 	}
 
 	public bool IsHolding(ItemCategorySettings categorySettings)
@@ -105,7 +99,7 @@ public class PlayerHand : MonoBehaviour
 	{
 		HandItem currentItem = null;
 
-		foreach (HandItem item in _handItemReferences)
+		foreach (HandItem item in _handItemReferences.Values)
 		{
 			if (CurrentHandItem == null)
 				return;
@@ -153,72 +147,17 @@ public class PlayerHand : MonoBehaviour
 		}
 	}
 
-	WeaponItemType GetNextWeaponItemType(WeaponItemType current)
+	public void SwitchItem()
 	{
-		List<ItemData> items = new List<ItemData>(WeaponInventoryService.Items.Values.ToList());
-
-		int next = (int)current + 1;
-		if (next >= items.Count)
-		{
-			next = 0;
-		}
-
-		for (int i = next; i < items.Count; i++)
-        {
-			ItemData item = items[i];
-
-			if (item != null)
-			{
-				next = i;
-				return (WeaponItemType)next;
-			}
-        }
-
-		return current;
-    }
-
-	WeaponItemType GetPreviousWeaponItemType(WeaponItemType current)
-	{
-		List<ItemData> items = new List<ItemData>(WeaponInventoryService.Items.Values.ToList());
-
-		int next = (int)current - 1;
-		if (next < 0)
-		{
-			next = items.Count - 1;
-		}
-
-		for (int i = next; i < items.Count; i--)
-		{
-			ItemData item = items[i];
-
-			if (item != null)
-			{
-				next = i;
-				return (WeaponItemType)next;
-			}
-		}
-
-		return current;
-	}
-
-	public void NextItem()
-	{
-		CurrentItemType = GetNextWeaponItemType(CurrentItemType);
+		CurrentItemType = CurrentItemType == WeaponItemType.MeleeWeapon ? WeaponItemType.RangedWeapon : WeaponItemType.MeleeWeapon;
 		UpdateHand();
 	}
-
-	public void PreviousItem()
-	{
-		CurrentItemType = GetPreviousWeaponItemType(CurrentItemType);
-		UpdateHand();
-	}
-
 	
 	/// <summary>
 	/// Is called on shooting animation
 	/// </summary>
 	public void UseHandItem()
 	{
-		CurrentHandItem.OnUse();
+		CurrentHandItem.Use();
 	}
 }

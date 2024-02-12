@@ -42,38 +42,8 @@ public class WeaponInventoryData
 		Items[2] = new ItemData(itemSettings.SaveID, ammo);
     }
 
-    public void SetItem1(ItemSettings itemSettings, int amount)
+    public void SetItem(ItemSettings itemSettings, int amount)
     {
 		Items[3] = new ItemData(itemSettings.SaveID, amount);
     }
-
-    public void SetItem2(ItemSettings itemSettings, int amount)
-    {
-		Items[4] = new ItemData(itemSettings.SaveID, amount);
-    }
-
-    public void AddItem(ItemSettings itemSettings, int amount)
-    {
-        if (Items[3] == null)
-        {
-			Items[3] = new ItemData(itemSettings.SaveID, amount);
-            return;
-        }
-        else if (Items[4] == null)
-        {
-			Items[4] = new ItemData(itemSettings.SaveID, amount);
-            return;
-		}
-        
-        if (Items[3].SaveID == itemSettings.SaveID)
-        {
-            Items[3].Amount += amount;
-            return;
-		}
-		else if (Items[4].SaveID == itemSettings.SaveID)
-        {
-			Items[4].Amount += amount;
-            return;
-		}
-	}
 }

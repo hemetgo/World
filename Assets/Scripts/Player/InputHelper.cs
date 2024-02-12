@@ -57,6 +57,11 @@ public class InputHelper : MonoBehaviour
 			if (Input.GetButtonUp("Interact"))
 				GameEvents.Inputs.OnInteract?.Invoke(InputState.Up);
 
+			if (Input.GetButtonDown("Item"))
+				GameEvents.Inputs.OnItem?.Invoke(InputState.Down);
+			if (Input.GetButtonUp("Item"))
+				GameEvents.Inputs.OnItem?.Invoke(InputState.Up);
+
 			if (Input.mouseScrollDelta.y > 0)
 				GameEvents.Inputs.OnScrollUp?.Invoke();
 			if (Input.mouseScrollDelta.y < 0)
